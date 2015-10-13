@@ -2,15 +2,18 @@
 
 ## ROUTES
 **due: 10/16/2015**
+
 We need three landing pages .
 * `/`
 * `/login`
 * `/user/name`
+* 
 Also can have arbitrary pages for internal redirections between services.
 (Let's not worried about REST APIs right now.)
 
 ## UIDESIGN
 **due: 10/16/2015**
+
 Need to design these pages
 
 1. non-logged in `/` 
