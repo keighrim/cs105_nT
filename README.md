@@ -23,6 +23,9 @@ Need to design these pages
 1. logged in `/`
     * [ ] personal timeline
     * [ ] ready for camera?
+1. log-in page
+    * [ ] login 
+    * [ ] register
 1. profile pages (`user/name`) common (shown to non-logged-in's)
     * [ ] profile
     * [ ] list of followes
