@@ -22,6 +22,7 @@ Need to design these pages
     * [ ] ready for camera?
 1. logged in `/`
     * [ ] personal timeline
+    * [ ] new tweet form
     * [ ] ready for camera?
 1. log-in page
     * [ ] login 
