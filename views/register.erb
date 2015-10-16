@@ -1,0 +1,40 @@
+<html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<head>
+	<title>NanoTwitter</title>
+</head>
+
+<body>
+	<div class="row">
+		<div class="container-fluid">
+			<div class="navbar navbar-custom">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">NanoTwitter 0.1</a>
+				</div>
+				<ul class="nav navbar-nav pull-right">
+					<li><a href = '/register'>Register/Login interface</a></li>
+					<li><a href = '/timeline'>Timeline interface</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row" style="padding-left:10px; padding-right:10px">
+		<div class="col-md-8 col-md-offset-4">
+		<div class="input-group">
+			<h4>Register here:</h4>
+			<form action="/register" method="POST">
+				<div class="col-md-8">
+					<input type="text" class="form-control" name="name" placeholder="Your username" required="true"/>
+					<input type="text" class="form-control" name="email" placeholder="Your email" required="true"/>
+				</div>	
+				<div class="col-md-3">
+					<input class="button btn-md btn-primary"type="submit" value="Submit" />
+				</div>				
+			</form>
+		</div>	
+		</div>	
+	</div>	
+
+</body>

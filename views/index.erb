@@ -1,0 +1,103 @@
+<html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<head>
+	<title>NanoTwitter</title>
+</head>
+
+<body>
+	<div class="row">
+		<div class="container-fluid">
+			<div class="navbar navbar-custom">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">NanoTwitter 0.1</a>
+				</div>
+				<ul class="nav navbar-nav pull-right">
+					<li><a href = '/register'>Register/Login interface</a></li>
+					<li><a href = '/timeline'>Timeline interface</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" style="padding-left:10px; padding-right:10px">
+		<div class="col-md-5 col-md-offset-1">
+			<h3>NanoTwitter construction site</h3>
+			<div class="input-group">
+				<h4>Register here:</h4>
+				<form action="/register" method="POST">
+					<div class="col-md-8">
+						<input type="text" class="form-control" name="name" placeholder="Your username" required="true"/>
+						<input type="text" class="form-control" name="email" placeholder="Your email" required="true"/>
+					</div>	
+					<div class="col-md-3">
+						<input class="button btn-md btn-primary"type="submit" value="Submit" />
+					</div>				
+				</form>
+			</div>	
+
+			<div class="input-group">
+				<h4>Tweet as user:</h4>
+				<form action="/tweet" method="POST">
+					<div class="col-md-8">
+						<input type="text" class="form-control" name="name" placeholder="username" required="true"/>
+						<input type="text" class="form-control" name="content" placeholder="Max 140 characters" required="true"/>
+					</div>	
+					<div class="col-md-3">
+						<input class="button btn-md btn-primary"type="submit" value="Submit" />
+					</div>				
+				</form>
+			</div>	
+
+			<div class="input-group">
+				<h4>Get these two to follow each other:</h4>
+				<form action="/follows" method="POST">
+					<div class="col-md-8">
+						<input type="text" class="form-control" name="u1" placeholder="username" required="true"/>
+						<input type="text" class="form-control" name="u2" placeholder="username" required="true"/>						
+					</div>	
+					<div class="col-md-3">
+						<input class="button btn-md btn-primary"type="submit" value="Submit" />
+					</div>				
+				</form>
+			</div>	
+
+			<div class="input-group">
+				<h4>Show timeline as seen by user: (not working)</h4>
+				<form action="/timeline" method="POST">
+					<div class="col-md-8">
+						<input type="text" class="form-control" name="name" placeholder="username" required="true"/>				
+					</div>	
+					<div class="col-md-3">
+						<input class="button btn-md btn-primary"type="submit" value="Submit" />
+					</div>				
+				</form>
+			</div>	
+		</div>
+		
+		<div class="col-md-5 col-md-offset-1">
+			<div class="row">
+				<h3>Current users: </h3>
+				<ul>
+					<% @users.each do |u|%>
+					<li><%= u.name << ": " << u.email %></br></li>
+					<% followers = u.followers %>
+					<b>followers:</b>
+					<ul>
+						<% followers.each do |f| %>
+						<li><%= f.name%></br></li>
+						<% end %>
+					</ul>
+					<% followed = u.followed_users %>
+					<b>followed users:</b>
+					<ul>
+						<% followed.each do |f| %>
+						<li><%= f.name%></br></li>
+						<% end %>
+					</ul>
+					<% end %>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
