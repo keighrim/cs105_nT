@@ -2,11 +2,36 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require './config/environments' # database configuratio
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
-# enable :sessions
+enable :sessions
+
+after {ActiveRecord::Base.connection.close}
 
 get '/' do
-	@users = User.all
-	erb :index
+	if session[:logged_in_user_id].nil?
+		@users = User.all
+		erb :index
+	else
+		@user = logged_in_user
+		erb :profile
+	end
+end
+
+post '/login' do
+	username = params[:name]
+	password = params[:password]
+	u = User.find_by(name: username, password: password)
+	if u.nil?
+		#add a redirect to a invalid login page
+		"Invalid login credentials"
+	else
+		session[:logged_in_user_id] = u.id
+		redirect "/"
+	end
+end
+
+get '/logout' do
+	session[:logged_in_user_id] = nil
+	redirect '/'
 end
 
 get '/register' do
@@ -27,7 +52,7 @@ get '/register' do
 end
 
 post '/tweet' do	
-	user = set_user(params[:name])
+	user = logged_in_user
 	if user.nil?
 		"Sorry, there was an error!"
 	end
@@ -36,15 +61,26 @@ post '/tweet' do
 	@tweet = Tweet.new(tweet_info)
 
 	if @tweet.save
-		redirect '/timeline'
+		redirect back
 	else
 		"Sorry, there was an error!"
 	end
 end
 
 get '/timeline' do
-	@tweets = Tweet.all.shuffle
-	erb :timeline
+	u_id = session[:logged_in_user_id]
+	if u_id.nil?
+		redirect '/register'
+		#add a view? Or redirect to the log-in page?
+	else
+		tweet_ids = Timeline.where(user_id: u_id).pluck(:tweet_id)
+		@tweets = []
+		tweet_ids.each do |id|
+			@tweets << Tweet.find_by_id(id)
+		end
+
+		erb :timeline
+	end
 end
 
 post '/follows' do
@@ -66,3 +102,13 @@ def set_user(name)
 
 	return nil
 end
+
+def logged_in_user
+	u_id = session[:logged_in_user_id]
+	if u_id.nil?
+		nil
+	else
+		User.find_by_id(u_id)
+	end
+end
+

@@ -1,0 +1,61 @@
+<html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<head>
+    <title>NanoTwitter</title>
+</head>
+
+<body>
+    <div class="row">
+        <div class="container-fluid">
+            <div class="navbar navbar-custom">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">NanoTwitter 0.1</a>
+                </div>
+                <ul class="nav navbar-nav pull-right">
+                    <li><a href = '/register'>Register/Login interface</a></li>
+                    <li><a href = '/timeline'>Timeline interface</a></li>
+                    <li><a href = '/logout'>Log-out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="padding-left:10px; padding-right:10px">
+        <div class="col-md8 col-md-offset-4">
+            <h2> <%= @user.name %> </h2>
+            <h4> <%= @user.email %> </h4>
+        </div>
+    </div>
+
+    <div class="row" style="padding-left:10px; padding-right:10px">
+        <div class="col-md-8 col-md-offset-4">
+        <div class="input-group">
+            <h4>Tweet:</h4>
+            <form action="/tweet" method="POST">
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="content" placeholder="Max 140 characters" required="true"/>
+                </div>  
+                <div class="col-md-3">
+                    <input class="button btn-lg btn-primary"type="submit" value="Submit" />
+                </div>              
+            </form>
+        </div>
+        </div>
+    </div>  
+
+    <div class="row" style="padding-left:10px; padding-right:10px">
+        <div class="col-md-8 col-md-offset-4">
+        <h3>Tweets</h3> 
+        <ul>
+            <% tweets = @user.tweets%>
+            <% tweets.each do |tweet| %>
+                <li>
+                    <%= tweet.content %> </br>
+                </li>
+            <% end %>
+        </ul>
+    </div>  
+    </div>
+</body>
+
+

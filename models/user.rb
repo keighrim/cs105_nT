@@ -5,5 +5,5 @@ class User < ActiveRecord::Base
 	has_many :followers, :through => :followings, :source => :user
 
 	has_many :timelines
-	has_many :tweets, :through => :timelines
+	has_many :tweets
 end
