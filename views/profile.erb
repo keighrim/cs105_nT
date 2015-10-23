@@ -24,6 +24,19 @@
         <div class="col-md8 col-md-offset-4">
             <h2> <%= @user.name %> </h2>
             <h4> <%= @user.email %> </h4>
+            <% unless @is_current_user %>
+                <% if @following %>
+                    <form action="/unfollows" method="POST">
+                        <input type="hidden" name="user_id" value="<%= @user.id %>" />
+                        <input class="btn btn-primary" type="submit" value="Unfollow" />
+                    </form>
+                <% else %>
+                    <form action="/follows" method="POST">
+                        <input type="hidden" name="user_id" value="<%= @user.id %>" />
+                        <input class="btn btn-primary" type="submit" value="Follow" />
+                    </form>
+                <% end %>
+            <% end %>
         </div>
     </div>
 
