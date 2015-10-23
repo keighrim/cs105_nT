@@ -6,7 +6,7 @@
 require 'better_errors'
 
 configure :production do
-  puts "[production environment]"
+  puts '[production environment]'
   db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
   ActiveRecord::Base.establish_connection(
@@ -20,7 +20,7 @@ configure :production do
 end
 
 configure :development, :test do
-  puts "[develoment or test Environment]"
+  puts '[development or test Environment]'
   use BetterErrors::Middleware
   BetterErrors.application_root = __dir__
 end

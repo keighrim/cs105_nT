@@ -18,54 +18,55 @@ get '/' do
 end
 
 post '/login' do
-	username = params[:name]
-	password = params[:password]
-	u = User.find_by(name: username, password: password)
-	if u.nil?
-		#add a redirect to a invalid login page
-		"Invalid login credentials"
-	else
-		session[:logged_in_user_id] = u.id
-		redirect "/"
-	end
+  username = params[:name]
+  password = params[:password]
+  u = User.find_by(name: username, password: password)
+  if u.nil?
+    #add a redirect to a invalid login page
+    'Invalid login credentials'
+  else
+    session[:logged_in_user_id] = u.id
+    session[:logged_in_user_name] = u.name
+    redirect '/'
+  end
 end
 
 get '/logout' do
-	session[:logged_in_user_id] = nil
-	redirect '/'
+  session[:logged_in_user_id] = nil
+  redirect '/'
 end
 
 get '/register' do
-	erb :register
+  erb :register
 end
 
 post '/register' do
-	new_user = User.new(params)
-	if new_user.save
-		redirect '/'
-	else
-		"Sorry, there was an error!"
-	end
+  new_user = User.new(params)
+  if new_user.save
+    redirect '/'
+  else
+    'Sorry, there was an error!'
+  end
 end
 
 get '/register' do
-	erb :register
+  erb :register
 end
 
-post '/tweet' do	
-	user = logged_in_user
-	if user.nil?
-		"Sorry, there was an error!"
-	end
+post '/tweet' do
+  user = logged_in_user
+  if user.nil?
+    'Sorry, there was an error!'
+  end
 
-	tweet_info = {:user_id=>user.id, :content=>params[:content]}
-	@tweet = Tweet.new(tweet_info)
+  tweet_info = {:user_id=>user.id, :content=>params[:content]}
+  @tweet = Tweet.new(tweet_info)
 
-	if @tweet.save
-		redirect back
-	else
-		"Sorry, there was an error!"
-	end
+  if @tweet.save
+    redirect back
+  else
+    'Sorry, there was an error!'
+  end
 end
 
 get '/timeline' do
@@ -80,17 +81,46 @@ get '/timeline' do
 	end
 end
 
-# post '/follows' do
-# 	u1 = set_user(params[:u1])
-# 	u2 = set_user(params[:u2])
-# 	unless u1.nil? || u2.nil?
-# 		u2.followed_users << u1
-# 		u1.followed_users << u2
-# 		redirect '/'
-# 	else
-# 		"Sorry, there was an error!"
-# 	end
-# end
+get '/profile' do
+  if params[:name] && param[:name] != session[:logged_in_user_name]
+    redirect "/profile/#{params[:name]}"
+  end
+
+  u_id = session[:logged_in_user_id]
+  if u_id.nil?
+    redirect '/register'
+    #add a view? Or redirect to the log-in page?
+  else
+    tweet_ids = Timeline.where(user_id: u_id).pluck(:tweet_id)
+    @tweets = []
+    tweet_ids.each do |id|
+      @tweets << Tweet.find_by_id(id)
+    end
+
+    erb :timeline
+  end
+end
+
+get '/profile/:name' do
+  loggin_in = false
+  @name = params[:name]
+  if @name == session[:logged_in_user_name]
+    loggin_in = true
+  end
+  u_id = User.where(name: @name).first.id
+
+  tweet_ids = Timeline.where(user_id: u_id).pluck(:tweet_id)
+  @tweets = []
+  tweet_ids.each do |id|
+    @tweets << Tweet.find_by_id(id)
+  end
+
+  if loggin_in
+    erb :timeline
+  else
+    erb :timeline_only
+  end
+end
 
 post '/follows' do
 	user = User.find_by_id(params[:user_id])
@@ -134,21 +164,19 @@ get '/users/:user_id' do |user_id|
 	end
 end
 
-
 def set_user(name)
-	if !name.nil?
-		return User.find_by_name(name)
-	end
-
-	return nil
+  if name
+    return User.find_by_name(name)
+  end
+  nil
 end
 
 def logged_in_user
-	u_id = session[:logged_in_user_id]
-	if u_id.nil?
-		nil
-	else
-		User.find_by_id(u_id)
-	end
+  u_id = session[:logged_in_user_id]
+  if u_id.nil?
+    nil
+  else
+    User.find_by_id(u_id)
+  end
 end
 
