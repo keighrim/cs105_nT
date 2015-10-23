@@ -8,14 +8,14 @@ class Follow < ActiveRecord::Base
     private
 
     def add_followed_tweets
-        tweets = Tweet.where(user_id: self.followed_user_id)
+        tweets = self.followed_user.tweets
         tweets.each do |tweet|
             Timeline.create(user_id: self.user_id, tweet_id: tweet.id)
         end
     end
 
     def remove_followed_tweets
-        tweets = Tweet.where(user_id: self.followed_user_id)
-        tweets.joins(:timelines).where(user_id: self.user_id).destroy_all
+        tweet_ids = self.followed_user.tweets.pluck(:id)
+        Timeline.where(user_id: self.user_id, tweet_id: tweet_ids).destroy_all
     end
 end

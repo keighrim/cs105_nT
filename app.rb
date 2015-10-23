@@ -60,17 +60,11 @@ post '/tweet' do
 end
 
 get '/profile' do
-  if params[:name] && param[:name] != session[:logged_in_user_name]
-    redirect "/users/#{params[:name]}"
-  end
-
-  u_id = session[:logged_in_user_id]
-  @user = User.find(u_id)
-  if u_id.nil?
+  @user = logged_in_user
+  if @user.nil?
     redirect '/register'
-    #add a view? Or redirect to the log-in page?
   else
-    @tweets = Tweet.where(user_id: u_id)
+    @tweets = @user.tweets
     erb :profile
   end
 end
@@ -105,7 +99,7 @@ post '/unfollows' do
 	end	
 end
 
-get '/users/:user_id' do |user_id|
+get '/profile/:user_id' do |user_id|
 	logged_in_user_id = session[:logged_in_user_id]
 	if logged_in_user.nil?
     redirect '/register'
@@ -123,17 +117,10 @@ get '/users/:user_id' do |user_id|
 			else
 				@following = false
 			end
-      @tweets = Tweet.where(user_id: user_id)
+      @tweets = @user.tweets
 			erb :profile
 		end
 	end
-end
-
-
-def set_user(name)
-  if name
-     User.find_by_name(name)
-  end
 end
 
 def logged_in_user

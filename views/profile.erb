@@ -65,8 +65,7 @@
             <h3>Tweets</h3> 
             <ul>
                 <% @tweets.each do |t|%>
-                <% op = t.user.name %>
-                <li><%= op << ": " << t.content %></br></li>
+                    <li><%=t.content %></br></li>
                 <% end %>
             </ul>
         </div>  
