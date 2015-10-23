@@ -21,6 +21,7 @@
 	</div>
 
 
+<% if !session[:logged_in_user_id].nil? %>
 	<div class="row" style="padding-left:10px; padding-right:10px">
 		<div class="col-md-8 col-md-offset-4">
 		<div class="input-group">
@@ -36,6 +37,7 @@
 		</div>
 		</div>
 	</div>	
+<% end %>
 
 	<div class="row" style="padding-left:10px; padding-right:10px">
 		<div class="col-md-8 col-md-offset-4">
