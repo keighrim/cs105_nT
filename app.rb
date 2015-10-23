@@ -68,6 +68,11 @@ post '/tweet' do
 end
 
 get '/timeline' do
+    
+    if !params[:name].nil?
+        redirect "/timeline/#{params[:name]}"
+    end
+    
 	u_id = session[:logged_in_user_id]
 	if u_id.nil?
 		redirect '/register'
@@ -81,6 +86,20 @@ get '/timeline' do
 
 		erb :timeline
 	end
+end
+
+get '/timeline/:name' do
+    @name = params[:name]
+    u_id = User.where(name: @name).first.id
+    
+    tweet_ids = Timeline.where(user_id: u_id).pluck(:tweet_id)
+    @tweets = []
+    tweet_ids.each do |id|
+        @tweets << Tweet.find_by_id(id)
+    end
+    
+    erb :timeline_only
+    
 end
 
 post '/follows' do
