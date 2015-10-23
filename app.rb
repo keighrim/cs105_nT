@@ -26,6 +26,7 @@ end
 
 get '/logout' do
   session[:logged_in_user_id] = nil
+  session[:logged_in_user_name] = nil
   redirect '/'
 end
 
@@ -75,9 +76,10 @@ end
 
 get '/timeline' do
   if session[:logged_in_user_name].nil?
-    @tweets = Tweet.all.take(50)
+    @tweets = Tweet.all.order(:tweeted_date).take(50)
+  else
+    @tweets = User.find(session[:logged_in_user_id]).tweets.order(:tweeted_date)
   end
-  @tweets = User.find(session[:logged_in_user_id]).tweets
   erb :timeline
 end
 
@@ -104,7 +106,9 @@ end
 
 get '/users/:user_id' do |user_id|
 	logged_in_user_id = session[:logged_in_user_id]
-	if user_id == logged_in_user_id
+	if logged_in_user.nil?
+    redirect '/register'
+  elsif user_id == logged_in_user_id
 		redirect '/profile'
 	else
 		@user = User.find_by_id(user_id)
