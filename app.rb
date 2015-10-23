@@ -7,13 +7,7 @@ enable :sessions
 after {ActiveRecord::Base.connection.close}
 
 get '/' do
-  if session[:logged_in_user_id].nil?
-    @users = User.all
-    erb :index
-  else
-    @user = get_user_in
-    erb :profile
-  end
+  redirect '/timeline'
 end
 
 post '/login' do
@@ -49,7 +43,7 @@ post '/register' do
 end
 
 post '/tweet' do
-  user = get_user_in
+  user = logged_in_user
   if user.nil?
     'Sorry, there was an error!'
   end
@@ -66,7 +60,7 @@ end
 
 get '/profile' do
   if params[:name] && param[:name] != session[:logged_in_user_name]
-    redirect "/profile/#{params[:name]}"
+    redirect "/users/#{params[:name]}"
   end
 
   u_id = session[:logged_in_user_id]
@@ -74,49 +68,70 @@ get '/profile' do
     redirect '/register'
     #add a view? Or redirect to the log-in page?
   else
-    @tweets = Tweet.find_by_user_id(u_id)
+    @tweets = Tweet.where(user_id: u_id)
     erb :timeline
   end
-end
-
-get '/profile/:name' do
-  if @name == session[:logged_in_user_name]
-    redirect '/profile'
-  end
-
-  u_id = User.find_by_name(@name)
-  @tweets = Tweet.find_by_user_id(u_id)
-  erb :timeline
 end
 
 get '/timeline' do
   if session[:logged_in_user_name].nil?
     @tweets = Tweet.all.take(50)
   end
-
-  @tweets = User.find(session[:logged_in_user_id).tweets
+  @tweets = User.find(session[:logged_in_user_id]).tweets
   erb :timeline
 end
 
 post '/follows' do
-  u1 = set_user(params[:u1])
-  u2 = set_user(params[:u2])
-  if u1 && u2
-    'Sorry, there was an error!'
-  else
-    u2.followed_users << u1
-    u1.followed_users << u2
-    redirect back
-  end
+	user = User.find_by_id(params[:user_id])
+	if user.nil?
+		"Sorry, there was an error"
+	else
+		logged_in_user.followed_users << user
+		redirect back
+	end
 end
+
+post '/unfollows' do
+	user = User.find_by_id(params[:user_id])
+	logged_in_user_id = session[:logged_in_user_id]
+	if user.nil?
+		"Sorry, there was an error"
+	else
+		logged_in_user.followed_users.destroy(user)
+		redirect back
+	end	
+end
+
+get '/users/:user_id' do |user_id|
+	logged_in_user_id = session[:logged_in_user_id]
+	if user_id == logged_in_user_id
+		redirect '/profile'
+	else
+		@user = User.find_by_id(user_id)
+		if @user.nil?
+			"User does not exist"
+		else
+			@is_current_user = false
+			is_following = logged_in_user.followed_users.include?(@user)
+			if is_following
+				@following = true
+			else
+				@following = false
+			end
+      @tweets = Tweet.where(user_id: user_id)
+			erb :profile
+		end
+	end
+end
+
 
 def set_user(name)
   if name
-    return User.find_by_name(name)
+     User.find_by_name(name)
   end
 end
 
-def get_user_in
+def logged_in_user
   User.find_by_id(session[:logged_in_user_id])
 end
 

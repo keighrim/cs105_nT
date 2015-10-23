@@ -5,20 +5,24 @@
 </head>
 
 <body>
-	<div class="row">
-		<div class="container-fluid">
-			<div class="navbar navbar-custom">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="/">NanoTwitter 0.1</a>
-				</div>
-				<ul class="nav navbar-nav pull-right">
-					<li><a href = '/register'>Register/Login interface</a></li>
-					<li><a href = '/timeline'>Timeline interface</a></li>
-					<li><a href = '/logout'>Log-out</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="container-fluid">
+            <div class="navbar navbar-custom">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">NanoTwitter 0.1</a>
+                </div>
+                <ul class="nav navbar-nav pull-right">
+                    <li><a href = '/timeline'>Timeline interface</a></li>
+                    <% if !session[:logged_in_user_id].nil?  %>
+                        <li><a href = '/profile'>Hi, <%= session[:logged_in_user_name]%>
+	                    <li><a href = '/logout'>Log-out</a></li>
+                    <% else %>
+                        <li><a href = '/register'>Register/Login</a></li>
+                    <% end %>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 	<div class="row" style="padding-left:10px; padding-right:10px">
 		<div class="col-md-5 col-md-offset-1">
