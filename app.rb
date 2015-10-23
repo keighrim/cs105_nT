@@ -65,12 +65,13 @@ get '/profile' do
   end
 
   u_id = session[:logged_in_user_id]
+  @user = User.find(u_id)
   if u_id.nil?
     redirect '/register'
     #add a view? Or redirect to the log-in page?
   else
     @tweets = Tweet.where(user_id: u_id)
-    erb :timeline
+    erb :profile
   end
 end
 
@@ -78,7 +79,7 @@ get '/timeline' do
   if session[:logged_in_user_name].nil?
     @tweets = Tweet.all.order(:tweeted_date).take(50)
   else
-    @tweets = User.find(session[:logged_in_user_id]).tweets.order(:tweeted_date)
+    @tweets = User.find(session[:logged_in_user_id]).feeds.order(:tweeted_date)
   end
   erb :timeline
 end

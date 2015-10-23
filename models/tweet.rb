@@ -10,7 +10,7 @@ class Tweet < ActiveRecord::Base
   def add_to_timelines
     #Adding own tweets to timeline currently, can evaluate this
     Timeline.create(user_id: self.user_id, tweet_id: self.id)
-    self.followers.each do |follower|
+    user.followers.each do |follower|
       Timeline.create(user_id: follower.id, tweet_id: self.id)
     end
   end
