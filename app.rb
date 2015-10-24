@@ -100,9 +100,7 @@ post '/unfollows' do
 end
 
 get '/profile/:user_name' do |user_name|
-  if logged_in_user.nil?
-    redirect '/register'
-  elsif user_name ==  session[:logged_in_user_name]
+  if user_name ==  session[:logged_in_user_name]
     redirect '/profile'
   else
     @user = User.where(name: user_name).first
@@ -110,7 +108,9 @@ get '/profile/:user_name' do |user_name|
       "Oops, user \"#{user_name}\" does not exist"
     else
       @is_current_user = false
-      is_following = logged_in_user.followed_users.include?(@user)
+      if !logged_in_user.nil?
+        is_following = logged_in_user.followed_users.include?(@user)
+      end
       if is_following
         @following = true
       else
