@@ -29,7 +29,12 @@
         <div class="col-md8 col-md-offset-4">
             <h2> <%= @user.name %> </h2>
             <h4> <%= @user.email %> </h4>
-            <% if session[:logged_in_user_id]==@user.id  %>
+            <% if session[:logged_in_user_id] == nil  %>
+            <%= "Log in to follow #{@user.name}" %>
+            <form action="/register" method="GET">
+                <input class="btn btn-primary" type="submit" value="Login" />
+            </form>
+            <% elsif session[:logged_in_user_id] == @user.id  %>
             <div class="row" style="padding-left:10px; padding-right:10px">
                 <div class="input-group">
                     <h4>Tweet</h4>
@@ -43,8 +48,7 @@
                     </form>
                 </div>
             </div> 
-            <% else %> 
-            <% if @following %>
+            <% elsif @following %>
             <form action="/unfollows" method="POST">
                 <input type="hidden" name="user_id" value="<%= @user.id %>" />
                 <input class="btn btn-primary" type="submit" value="Unfollow" />
@@ -54,7 +58,6 @@
                 <input type="hidden" name="user_id" value="<%= @user.id %>" />
                 <input class="btn btn-primary" type="submit" value="Follow" />
             </form>
-            <% end %>
             <% end %>
         </div>
     </div>

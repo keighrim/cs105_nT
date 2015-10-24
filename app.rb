@@ -79,30 +79,28 @@ get '/timeline' do
 end
 
 post '/follows' do
-	user = User.find_by_id(params[:user_id])
-	if user.nil?
+  user = User.find_by_id(params[:user_id])
+  if user.nil?
     'Sorry, there was an error'
-	else
-		logged_in_user.followed_users << user
-		redirect back
-	end
+  else
+    logged_in_user.followed_users << user
+    redirect back
+  end
 end
 
 post '/unfollows' do
-	user = User.find_by_id(params[:user_id])
-	logged_in_user_id = session[:logged_in_user_id]
-	if user.nil?
+  user = User.find_by_id(params[:user_id])
+  logged_in_user_id = session[:logged_in_user_id]
+  if user.nil?
     'Sorry, there was an error'
-	else
-		logged_in_user.followed_users.destroy(user)
-		redirect back
-	end	
+  else
+    logged_in_user.followed_users.destroy(user)
+    redirect back
+  end
 end
 
 get '/profile/:user_name' do |user_name|
-  if logged_in_user.nil?
-    redirect '/register'
-  elsif user_name ==  session[:logged_in_user_name]
+  if user_name ==  session[:logged_in_user_name]
     redirect '/profile'
   else
     @user = User.where(name: user_name).first
@@ -110,7 +108,9 @@ get '/profile/:user_name' do |user_name|
       "Oops, user \"#{user_name}\" does not exist"
     else
       @is_current_user = false
-      is_following = logged_in_user.followed_users.include?(@user)
+      if !logged_in_user.nil?
+        is_following = logged_in_user.followed_users.include?(@user)
+      end
       if is_following
         @following = true
       else
@@ -124,27 +124,27 @@ end
 
 =begin
 get '/profile/:user_id' do |user_id|
-	logged_in_user_id = session[:logged_in_user_id]
-	if logged_in_user.nil?
+  logged_in_user_id = session[:logged_in_user_id]
+  if logged_in_user.nil?
     redirect '/register'
   elsif user_id == logged_in_user_id
-		redirect '/profile'
-	else
-		@user = User.find_by_id(user_id)
-		if @user.nil?
+    redirect '/profile'
+  else
+    @user = User.find_by_id(user_id)
+    if @user.nil?
       'User does not exist'
-		else
-			@is_current_user = false
-			is_following = logged_in_user.followed_users.include?(@user)
-			if is_following
-				@following = true
-			else
-				@following = false
-			end
+    else
+      @is_current_user = false
+      is_following = logged_in_user.followed_users.include?(@user)
+      if is_following
+        @following = true
+      else
+        @following = false
+      end
       @tweets = @user.tweets
-			erb :profile
-		end
-	end
+      erb :profile
+    end
+  end
 end
 =end
 
