@@ -81,7 +81,7 @@ end
 post '/follows' do
 	user = User.find_by_id(params[:user_id])
 	if user.nil?
-		"Sorry, there was an error"
+    'Sorry, there was an error'
 	else
 		logged_in_user.followed_users << user
 		redirect back
@@ -92,7 +92,7 @@ post '/unfollows' do
 	user = User.find_by_id(params[:user_id])
 	logged_in_user_id = session[:logged_in_user_id]
 	if user.nil?
-		"Sorry, there was an error"
+    'Sorry, there was an error'
 	else
 		logged_in_user.followed_users.destroy(user)
 		redirect back
@@ -108,7 +108,7 @@ get '/profile/:user_id' do |user_id|
 	else
 		@user = User.find_by_id(user_id)
 		if @user.nil?
-			"User does not exist"
+      'User does not exist'
 		else
 			@is_current_user = false
 			is_following = logged_in_user.followed_users.include?(@user)

@@ -14,8 +14,8 @@
                 <ul class="nav navbar-nav pull-right">
                     <li><a href = '/timeline'>Timeline interface</a></li>
                     <% if !session[:logged_in_user_id].nil?  %>
-                        <li><a href = '/profile'>Hi, <%= session[:logged_in_user_name]%>
-	                    <li><a href = '/logout'>Log-out</a></li>
+                        <li><a href = '/profile'>Hi, <%= session[:logged_in_user_name]%> </a>
+                        <li><a href = '/logout'>Log-out</a></li>
                     <% else %>
                         <li><a href = '/register'>Register/Login</a></li>
                     <% end %>
@@ -49,7 +49,9 @@
 		<ul>
 			<% @tweets.each do |t|%>
 			<% op = t.user.name %>
-			<li><%= op << ": " << t.content %></br></li>
+			<li><%=
+				"<a href=\"/profile/#{op}\"> #{op} </a> : #{t.content}"
+			%></li>
 			<% end %>
 		</ul>
 		</div>	
