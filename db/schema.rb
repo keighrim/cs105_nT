@@ -13,28 +13,28 @@
 
 ActiveRecord::Schema.define(version: 20151014214814) do
 
-  create_table 'follows', force: :cascade do |t|
-    t.integer 'user_id'
-    t.integer 'followed_user_id'
+  create_table "follows", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "followed_user_id"
   end
 
-  create_table 'timelines', force: :cascade do |t|
-    t.integer 'user_id'
-    t.integer 'tweet_id'
+  create_table "timelines", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "tweet_id"
   end
 
-  create_table 'tweets', force: :cascade do |t|
-    t.integer 'user_id'
-    t.string 'content'
-    t.date 'tweeted_date'
+  create_table "tweets", force: :cascade do |t|
+    t.integer "user_id"
+    t.string  "content"
+    t.date    "tweeted_date"
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'name'
-    t.string 'password'
-    t.string 'email'
-    t.date 'created_at'
-    t.date 'last_login'
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "password"
+    t.string "email"
+    t.date   "created_at"
+    t.date   "last_login"
   end
 
 end
