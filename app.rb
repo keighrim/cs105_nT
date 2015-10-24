@@ -99,6 +99,30 @@ post '/unfollows' do
 	end	
 end
 
+get '/profile/:user_name' do |user_name|
+  if logged_in_user.nil?
+    redirect '/register'
+  elsif user_name ==  session[:logged_in_user_name]
+    redirect '/profile'
+  else
+    @user = User.where(name: user_name).first
+    if @user.nil?
+      "Oops, user \"#{user_name}\" does not exist"
+    else
+      @is_current_user = false
+      is_following = logged_in_user.followed_users.include?(@user)
+      if is_following
+        @following = true
+      else
+        @following = false
+      end
+      @tweets = @user.tweets
+      erb :profile
+    end
+  end
+end
+
+=begin
 get '/profile/:user_id' do |user_id|
 	logged_in_user_id = session[:logged_in_user_id]
 	if logged_in_user.nil?
@@ -122,6 +146,7 @@ get '/profile/:user_id' do |user_id|
 		end
 	end
 end
+=end
 
 def logged_in_user
   User.find_by_id(session[:logged_in_user_id])
