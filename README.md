@@ -191,4 +191,3 @@ POST https://localhost:4567/api/v1/tweets?user_id=123&text=sample.json
   },
 ]
 ```
-

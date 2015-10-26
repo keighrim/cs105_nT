@@ -99,3 +99,4 @@ build/
 Desktop.ini
 Thumbs.db
 Icon*
+*.sqlite3
