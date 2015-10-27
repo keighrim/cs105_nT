@@ -4,7 +4,7 @@ class Tweet < ActiveRecord::Base
   has_many :users, :through => :timeline
 
   after_create :add_to_timelines
-
+  validates :content, presence: true
   private
 
   def add_to_timelines

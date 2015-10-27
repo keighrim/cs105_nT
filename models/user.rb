@@ -7,4 +7,7 @@ class User < ActiveRecord::Base
   has_many :timelines
   has_many :tweets
   has_many :feeds, :through => :timelines, :source => :tweet
+
+  validates :email, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: true
 end
