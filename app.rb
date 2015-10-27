@@ -11,7 +11,7 @@ get '/' do
 end
 
 post '/login' do
-  username = params[:name]
+	username = params[:name]
   password = params[:password]
   u = User.find_by(name: username, password: password)
   if u.nil?
@@ -49,7 +49,7 @@ post '/tweet' do
     'Sorry, there was an error!'
   end
 
-  tweet_info = {:user_id=>user.id, :content=>params[:content]}
+  tweet_info = {:user_id=>user.id, :content=>params[:content], tweeted_at: Time.now}
   @tweet = Tweet.new(tweet_info)
 
   if @tweet.save
@@ -64,16 +64,16 @@ get '/profile' do
   if @user.nil?
     redirect '/register'
   else
-    @tweets = @user.tweets
+    @tweets = @user.tweets.order(tweeted_at: :desc)
     erb :profile
   end
 end
 
 get '/timeline' do
   if session[:logged_in_user_name].nil?
-    @tweets = Tweet.all.order(:tweeted_date).take(50)
+    @tweets = Tweet.all.order(tweeted_at: :desc).take(50)
   else
-    @tweets = User.find(session[:logged_in_user_id]).feeds.order(:tweeted_date)
+    @tweets = User.find(session[:logged_in_user_id]).feeds.order(tweeted_at: :desc)
   end
   erb :timeline
 end
