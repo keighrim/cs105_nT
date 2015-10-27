@@ -4,7 +4,8 @@ class Tweet < ActiveRecord::Base
   has_many :users, :through => :timeline
 
   after_create :add_to_timelines
-  validates :content, presence: true
+  validates :content, presence: true, length: { maximum: 140 }
+  
   private
 
   def add_to_timelines

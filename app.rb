@@ -37,6 +37,8 @@ end
 post '/register' do
   new_user = User.new(params)
   if new_user.save
+    session[:logged_in_user_id] = new_user.id
+    session[:logged_in_user_name] = new_user.name
     redirect '/'
   else
     'Sorry, there was an error!'
