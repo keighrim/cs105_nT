@@ -81,24 +81,13 @@ get '/timeline' do
 end
 
 post '/follows' do
-  user = User.find_by_id(params[:user_id])
-  if user.nil?
-    'Sorry, there was an error'
-  else
-    logged_in_user.followed_users << user
+    logged_in_user.follow(User.find_by_id(params[:user_id]))
     redirect back
-  end
 end
 
 post '/unfollows' do
-  user = User.find_by_id(params[:user_id])
-  logged_in_user_id = session[:logged_in_user_id]
-  if user.nil?
-    'Sorry, there was an error'
-  else
-    logged_in_user.followed_users.destroy(user)
+    logged_in_user.unfollow(User.find_by_id(params[:user_id]))
     redirect back
-  end
 end
 
 get '/profile/:user_name' do |user_name|
