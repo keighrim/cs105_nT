@@ -46,6 +46,7 @@ post '/register' do
 end
 
 post '/tweet' do
+=begin
   user = logged_in_user
   if user.nil?
     'Sorry, there was an error!'
@@ -59,6 +60,10 @@ post '/tweet' do
   else
     'Sorry, there was an error!'
   end
+=end
+  user = logged_in_user
+  @tweet = Tweet.make_tweet(user, user.id, params[:content], Time.now)
+  redirect back
 end
 
 get '/profile' do
