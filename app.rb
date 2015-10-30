@@ -118,7 +118,7 @@ get '/profile/:user_name' do |user_name|
       else
         @following = false
       end
-      @tweets = @user.tweets
+      @tweets = @user.tweets.order(tweeted_at: :desc)
       erb :profile
     end
   end
