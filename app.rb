@@ -46,21 +46,6 @@ post '/register' do
 end
 
 post '/tweet' do
-=begin
-  user = logged_in_user
-  if user.nil?
-    'Sorry, there was an error!'
-  end
-
-  tweet_info = {:user_id=>user.id, :content=>params[:content], tweeted_at: Time.now}
-  @tweet = Tweet.new(tweet_info)
-
-  if @tweet.save
-    redirect back
-  else
-    'Sorry, there was an error!'
-  end
-=end
   user = logged_in_user
   @tweet = Tweet.make_tweet(user, user.id, params[:content], Time.now)
   redirect back
