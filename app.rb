@@ -2,16 +2,19 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require './config/environments' # database configuratio
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
+require_relative 'tests'
 enable :sessions
 
 after {ActiveRecord::Base.connection.close}
+
+register NanoTwitter::Tests
 
 get '/' do
   redirect '/timeline'
 end
 
 post '/login' do
-	username = params[:name]
+  username = params[:name]
   password = params[:password]
   u = User.find_by(name: username, password: password)
   if u.nil?
@@ -52,6 +55,7 @@ post '/tweet' do
   end
 
   tweet_info = {:user_id=>user.id, :content=>params[:content], tweeted_at: Time.now}
+  # TODO why this is instance var
   @tweet = Tweet.new(tweet_info)
 
   if @tweet.save
