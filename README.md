@@ -1,4 +1,6 @@
 # nanoTwitter
+[ ![Codeship Status for keighrim/cs105_nT](https://codeship.com/projects/60a0d180-6167-0133-ecb2-7e706f11b58d/status?branch=develop)](https://codeship.com/projects/112493)
+
 nanoTwitter is a toy-mimic of popular social service [twitter](www.twitter.com), developed by 4 students at Brandeis as a course project from *Software Engineering for scalability*.
 
 ## License
