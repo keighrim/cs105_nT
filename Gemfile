@@ -4,6 +4,7 @@ gem 'sinatra'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'pg'
+gem 'sqlite3'
 
 gem 'better_errors'
 gem 'binding_of_caller'

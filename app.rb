@@ -2,16 +2,19 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require './config/environments' # database configuratio
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
+require_relative 'tests'
 enable :sessions
 
 after {ActiveRecord::Base.connection.close}
+
+register NanoTwitter::Tests
 
 get '/' do
   redirect '/timeline'
 end
 
 post '/login' do
-	username = params[:name]
+  username = params[:name]
   password = params[:password]
   u = User.find_by(name: username, password: password)
   if u.nil?
@@ -47,18 +50,8 @@ end
 
 post '/tweet' do
   user = logged_in_user
-  if user.nil?
-    'Sorry, there was an error!'
-  end
-
-  tweet_info = {:user_id=>user.id, :content=>params[:content], tweeted_at: Time.now}
-  @tweet = Tweet.new(tweet_info)
-
-  if @tweet.save
-    redirect back
-  else
-    'Sorry, there was an error!'
-  end
+  @tweet = Tweet.make_tweet(user, user.id, params[:content], Time.now)
+  redirect back
 end
 
 get '/profile' do
@@ -81,24 +74,13 @@ get '/timeline' do
 end
 
 post '/follows' do
-  user = User.find_by_id(params[:user_id])
-  if user.nil?
-    'Sorry, there was an error'
-  else
-    logged_in_user.followed_users << user
+    logged_in_user.follow(User.find_by_id(params[:user_id]))
     redirect back
-  end
 end
 
 post '/unfollows' do
-  user = User.find_by_id(params[:user_id])
-  logged_in_user_id = session[:logged_in_user_id]
-  if user.nil?
-    'Sorry, there was an error'
-  else
-    logged_in_user.followed_users.destroy(user)
+    logged_in_user.unfollow(User.find_by_id(params[:user_id]))
     redirect back
-  end
 end
 
 get '/profile/:user_name' do |user_name|
@@ -118,7 +100,7 @@ get '/profile/:user_name' do |user_name|
       else
         @following = false
       end
-      @tweets = @user.tweets
+      @tweets = @user.tweets.order(tweeted_at: :desc)
       erb :profile
     end
   end
