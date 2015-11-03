@@ -2,16 +2,19 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require './config/environments' # database configuratio
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
+require_relative 'tests'
 enable :sessions
 
 after {ActiveRecord::Base.connection.close}
+
+register NanoTwitter::Tests
 
 get '/' do
   redirect '/timeline'
 end
 
 post '/login' do
-	username = params[:name]
+  username = params[:name]
   password = params[:password]
   u = User.find_by(name: username, password: password)
   if u.nil?
@@ -97,7 +100,7 @@ get '/profile/:user_name' do |user_name|
       else
         @following = false
       end
-      @tweets = @user.tweets
+      @tweets = @user.tweets.order(tweeted_at: :desc)
       erb :profile
     end
   end
