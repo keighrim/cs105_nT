@@ -50,19 +50,8 @@ end
 
 post '/tweet' do
   user = logged_in_user
-  if user.nil?
-    'Sorry, there was an error!'
-  end
-
-  tweet_info = {:user_id=>user.id, :content=>params[:content], tweeted_at: Time.now}
-  # TODO why this is instance var
-  @tweet = Tweet.new(tweet_info)
-
-  if @tweet.save
-    redirect back
-  else
-    'Sorry, there was an error!'
-  end
+  @tweet = Tweet.make_tweet(user, user.id, params[:content], Time.now)
+  redirect back
 end
 
 get '/profile' do
@@ -85,24 +74,13 @@ get '/timeline' do
 end
 
 post '/follows' do
-  user = User.find_by_id(params[:user_id])
-  if user.nil?
-    'Sorry, there was an error'
-  else
-    logged_in_user.followed_users << user
+    logged_in_user.follow(User.find_by_id(params[:user_id]))
     redirect back
-  end
 end
 
 post '/unfollows' do
-  user = User.find_by_id(params[:user_id])
-  logged_in_user_id = session[:logged_in_user_id]
-  if user.nil?
-    'Sorry, there was an error'
-  else
-    logged_in_user.followed_users.destroy(user)
+    logged_in_user.unfollow(User.find_by_id(params[:user_id]))
     redirect back
-  end
 end
 
 get '/profile/:user_name' do |user_name|
