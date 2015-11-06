@@ -1,6 +1,6 @@
 module NanoTwitter
   module Test
-    module Follow
+    module FollowTest
 
       def self.registered(app)
 
@@ -10,24 +10,19 @@ module NanoTwitter
             # TODO need a error page
             'No test user registered. Going back to main in 5 secs.'
             sleep(5)
-            redirect '/'
+            400
           end
           all_users = (1..User.count).to_a    # DB index starts from 1, not 0
           all_users.delete(testuser.id)
           num.to_i.times do |i|
-            following = true
-            until !following
-              if all_users.size == 0
-                'No more user to follow.'
-                redirect '/'
-              end
-              follower_id = all_users.delete_at(rand(all_users.count))
-              follower = User.find_by_id(follower_id)
-              following = testuser.followed_users.include?(follower)
+            if all_users.size == 0
+              400
             end
-            testuser.followed_users << follower
+            follower_id = all_users.delete_at(rand(all_users.count))
+            follower = User.find_by_id(follower_id)
+            follower.followed_users << testuser
           end
-          redirect '/'
+          "Created #{num} Follows for testuser"
         end
 
       end

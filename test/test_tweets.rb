@@ -13,7 +13,7 @@ module NanoTwitter
                          content: Faker::Hacker.say_something_smart,
                          tweeted_at: Faker::Time.backward(30, :all))
           end
-          redirect '/'
+          "Created #{num} Tweets"
         end
       end
     end

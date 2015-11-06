@@ -16,7 +16,7 @@ module NanoTwitter
               saved = u.save
             end
           end
-          redirect '/'
+          "Created #{num} Users"
         end
       end
     end

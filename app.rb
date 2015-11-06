@@ -10,7 +10,7 @@ after {ActiveRecord::Base.connection.close}
 register NanoTwitter::Test::Reset
 register NanoTwitter::Test::Tweets
 register NanoTwitter::Test::Seed
-register NanoTwitter::Test::Follow
+register NanoTwitter::Test::FollowTest
 
 get '/' do
   redirect '/timeline'
