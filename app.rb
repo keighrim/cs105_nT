@@ -7,7 +7,7 @@ enable :sessions
 
 after {ActiveRecord::Base.connection.close}
 
-register NanoTwitter::Tests
+register Tests
 
 get '/' do
   redirect '/timeline'
