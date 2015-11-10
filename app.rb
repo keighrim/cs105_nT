@@ -1,13 +1,16 @@
 require 'sinatra'
 require 'sinatra/activerecord'
-require './config/environments' # database configuratio
+require './config/environments' # database configuration
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
-require_relative 'tests'
+Dir[File.dirname(__FILE__) + '/test/*.rb'].each {|file| require file }
 enable :sessions
 
 after {ActiveRecord::Base.connection.close}
 
-register NanoTwitter::Tests
+register NanoTwitter::Test::Reset
+register NanoTwitter::Test::Tweets
+register NanoTwitter::Test::Seed
+register NanoTwitter::Test::FollowTest
 
 get '/' do
   redirect '/timeline'
