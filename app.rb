@@ -12,6 +12,11 @@ register NanoTwitter::Test::Tweets
 register NanoTwitter::Test::Seed
 register NanoTwitter::Test::FollowTest
 
+# For loader.io verification
+get '/loaderio-82d98309070f9f1c9315ff5dcd667982/' do
+    'loaderio-82d98309070f9f1c9315ff5dcd667982'
+end
+
 get '/' do
   redirect '/timeline'
 end
