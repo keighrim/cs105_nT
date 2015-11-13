@@ -8,5 +8,5 @@ Rake::TestTask.new do |test|
     test.name = 'test:all'
     test.verbose = true
     test.warning = true
-    test.test_files = FileList['*spec.rb']
+    test.test_files = FileList['./test/*spec.rb']
 end
