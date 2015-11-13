@@ -1,6 +1,6 @@
 class Tweet < ActiveRecord::Base
   belongs_to :user
-  has_many :timelines
+  has_many :timelines, dependent: :destroy
   has_many :users, :through => :timeline
 
   after_create :add_to_timelines
