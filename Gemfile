@@ -13,3 +13,5 @@ gem 'binding_of_caller'
 
 gem 'tux'
 gem 'faker'
+
+gem 'newrelic_rpm'
