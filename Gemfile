@@ -15,3 +15,4 @@ gem 'tux'
 gem 'faker'
 
 gem 'newrelic_rpm'
+gem 'puma'

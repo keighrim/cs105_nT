@@ -89,7 +89,6 @@ describe "Integration - following" do
     added_tweet.content.must_equal "test content by user 2"
     
     Tweet.destroy(user2_tweet.id)
-    Timeline.destroy(timeline_record.first.id)
   end
   
   it "let's a user unfollow another user, and removes that user's tweets to the first user's timeline" do

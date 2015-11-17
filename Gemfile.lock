@@ -33,6 +33,7 @@ GEM
     minitest (5.8.0)
     newrelic_rpm (3.14.0.305)
     pg (0.18.3)
+    puma (2.15.3)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -74,6 +75,7 @@ DEPENDENCIES
   faker
   newrelic_rpm
   pg
+  puma
   sinatra
   sinatra-activerecord
   sqlite3

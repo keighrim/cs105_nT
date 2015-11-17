@@ -12,8 +12,8 @@ module NanoTwitter
           if @user.nil?
             User.new(name: 'testuser', email: 'test@u.ser', password: 'test').save
           else
-            Tweet.where(user_id: @user.id).delete_all
-            Follow.where(followed_user_id: @user.id).delete_all
+            Tweet.where(user_id: @user.id).destroy_all
+            Follow.where(followed_user_id: @user.id).destroy_all
           end
 
           "Test Reset Run Successful"
