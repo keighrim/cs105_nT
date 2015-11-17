@@ -2,7 +2,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require './config/environments' # database configuration
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
-Dir[File.dirname(__FILE__) + '/test/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/test/test*.rb'].each {|file| require file }
 enable :sessions
 
 after {ActiveRecord::Base.connection.close}
