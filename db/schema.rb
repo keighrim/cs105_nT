@@ -11,12 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014214814) do
+ActiveRecord::Schema.define(version: 20151115202737) do
 
   create_table "follows", force: :cascade do |t|
     t.integer "user_id"
     t.integer "followed_user_id"
   end
+
+  add_index "follows", ["followed_user_id"], name: "index_follows_on_followed_user_id"
+  add_index "follows", ["user_id"], name: "index_follows_on_user_id"
 
   create_table "timelines", force: :cascade do |t|
     t.integer "user_id"
@@ -29,6 +32,9 @@ ActiveRecord::Schema.define(version: 20151014214814) do
     t.datetime "tweeted_at"
   end
 
+  add_index "tweets", ["tweeted_at"], name: "index_tweets_on_tweeted_at"
+  add_index "tweets", ["user_id"], name: "index_tweets_on_user_id"
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "password"
@@ -36,5 +42,8 @@ ActiveRecord::Schema.define(version: 20151014214814) do
     t.date   "created_at"
     t.date   "last_login"
   end
+
+  add_index "users", ["id"], name: "index_users_on_id"
+  add_index "users", ["name"], name: "index_users_on_name"
 
 end
