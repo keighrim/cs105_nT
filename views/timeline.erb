@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="navbar navbar-custom">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">NanoTwitter 0.1</a>
+                    <a class="navbar-brand" href="/">NanoTwitter 0.5</a>
                 </div>
                 <ul class="nav navbar-nav pull-right">
                     <li><a href = '/timeline'>Timeline interface</a></li>
@@ -48,7 +48,7 @@
 		<h3> Timeline</h3> 
 		<ul>
 			<% @tweets.each do |t|%>
-			<% op = t.user.name %>
+			<% op = t.user_name %>
 			<li><%=
 				"<a href=\"/profile/#{op}\"> #{op} </a> : #{t.content}"
 			%></li>

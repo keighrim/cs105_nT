@@ -18,12 +18,12 @@ class Tweet < ActiveRecord::Base
     end
   end
   
-  def self.make_tweet(user, user_id, content, tweeted_at)
+  def self.make_tweet(user, content, tweeted_at)
     if user.nil?
       'Sorry, there was an error'
     end
   
-    tweet = Tweet.new(:user_id=>user_id, :content=>content, tweeted_at: tweeted_at)
+    tweet = Tweet.new(:user_id=>user.id, :user_name=>user.name, :content=>content, tweeted_at: tweeted_at)
 
     if tweet.save
       tweet
