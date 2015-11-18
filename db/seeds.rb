@@ -24,7 +24,7 @@ end
 
 all_users.each do |user|
   rand(0..10).times do
-    Tweet.create(user_id: user.id, content: Faker::Hacker.say_something_smart, tweeted_at: Faker::Time.backward(30, :all))
+    Tweet.create(user_id: user.id, :user_name=>user.name, content: Faker::Hacker.say_something_smart, tweeted_at: Faker::Time.backward(30, :all))
   end
 end
 
