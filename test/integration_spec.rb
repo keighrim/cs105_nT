@@ -20,7 +20,7 @@ describe 'Integration - following' do
   end
     
   it "let's a user follow another user, and adds that user's tweets to the first user's timeline" do
-    user2_tweet = Tweet.make_tweet(@test_user_2, @test_user_2.id, "test content by user 2", Time.now)
+    user2_tweet = Tweet.make_tweet(@test_user_2, "test content by user 2", Time.now)
     @test_user.follow(@test_user_2)
     @test_user.followed_users.include?(@test_user_2).must_equal true
     timeline_record = Timeline.where(user_id: @test_user.id)
@@ -33,7 +33,7 @@ describe 'Integration - following' do
   end
   
   it "let's a user unfollow another user, and removes that user's tweets to the first user's timeline" do
-      user2_tweet = Tweet.make_tweet(@test_user_2, @test_user_2.id, "test content by user 2", Time.now)
+      user2_tweet = Tweet.make_tweet(@test_user_2, "test content by user 2", Time.now)
       @test_user.follow(@test_user_2)
       @test_user.followed_users.include?(@test_user_2).must_equal true
       

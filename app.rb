@@ -3,7 +3,7 @@ require 'newrelic_rpm'
 require 'sinatra/activerecord'
 require './config/environments' # database configuration
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
-Dir[File.dirname(__FILE__) + '/test/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/test/test*.rb'].each {|file| require file }
 enable :sessions
 
 after {ActiveRecord::Base.connection.close}
@@ -12,6 +12,14 @@ register NanoTwitter::Test::Reset
 register NanoTwitter::Test::Tweets
 register NanoTwitter::Test::Seed
 register NanoTwitter::Test::FollowTest
+
+
+# Some global configurations
+configure do
+  set :version, '0.5'
+  set :app_name, 'Nano Twitter'
+  set :authors, ['Allan Chesarone', 'Keigh Rim', 'Shu Chen', 'Vladimir Susaya']
+end
 
 # For loader.io verification
 get '/loaderio-82d98309070f9f1c9315ff5dcd667982/' do
@@ -59,7 +67,7 @@ end
 
 post '/tweet' do
   user = logged_in_user
-  @tweet = Tweet.make_tweet(user, user.id, params[:content], Time.now)
+  @tweet = Tweet.make_tweet(user, params[:content], Time.now)
   redirect back
 end
 

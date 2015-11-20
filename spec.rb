@@ -53,14 +53,14 @@ describe Tweet do
   end
     
   it "can be made by a user" do
-    tweet = Tweet.make_tweet(@test_user, @test_user.id, "content here", Time.now)
+    tweet = Tweet.make_tweet(@test_user, "content here", Time.now)
     tweet.wont_equal 'Sorry, there was an error!'
     Tweet.destroy(tweet.id)
   end
 	
   #content is 150 characters long
   it "has no more than 140 characters" do
-    tweet = Tweet.make_tweet(@test_user, @test_user.id, "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789", Time.now)
+    tweet = Tweet.make_tweet(@test_user, "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789", Time.now)
     tweet.must_equal 'Sorry, there was an error!'
   end
     
@@ -80,7 +80,7 @@ describe "Integration - following" do
   end
     
   it "let's a user follow another user, and adds that user's tweets to the first user's timeline" do
-    user2_tweet = Tweet.make_tweet(@test_user_2, @test_user_2.id, "test content by user 2", Time.now)
+    user2_tweet = Tweet.make_tweet(@test_user_2, "test content by user 2", Time.now)
     @test_user.follow(@test_user_2)
     @test_user.followed_users.include?(@test_user_2).must_equal true
     timeline_record = Timeline.where(user_id: @test_user.id)
@@ -92,7 +92,7 @@ describe "Integration - following" do
   end
   
   it "let's a user unfollow another user, and removes that user's tweets to the first user's timeline" do
-      user2_tweet = Tweet.make_tweet(@test_user_2, @test_user_2.id, "test content by user 2", Time.now)
+      user2_tweet = Tweet.make_tweet(@test_user_2, "test content by user 2", Time.now)
       @test_user.follow(@test_user_2)
       @test_user.followed_users.include?(@test_user_2).must_equal true
       

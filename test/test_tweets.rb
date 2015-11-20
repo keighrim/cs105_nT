@@ -9,7 +9,7 @@ module NanoTwitter
         app.get '/test/tweets/:num' do |num|
           user = User.where(name: 'testuser').first
           num.to_i.times do |i|
-            Tweet.create(user_id: user.id,
+            Tweet.create(user_id: user.id, user_name: user.name,
                          content: Faker::Hacker.say_something_smart,
                          tweeted_at: Faker::Time.backward(30, :all))
           end
