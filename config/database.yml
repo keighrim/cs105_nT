@@ -6,5 +6,6 @@ test:
   database: db/test.sqlite3
 production:
   adapter: postgresql
+  pool: 20
   database: nT
   username: krim
