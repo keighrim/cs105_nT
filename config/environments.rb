@@ -4,6 +4,7 @@
 # This is automatically configured on Heroku, you only need to worry if you also
 # want to run your app locally
 require 'better_errors'
+require 'redis'
 
 configure :production do
   puts '[production environment]'
@@ -17,10 +18,16 @@ configure :production do
       :database => db.path[1..-1],
       :encoding => 'utf8'
   )
+
+  uri = URI.parse(ENV["REDISCLOUD_URL"])
+  $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 end
 
 configure :development, :test do
   puts '[development or test Environment]'
   use BetterErrors::Middleware
   BetterErrors.application_root = __dir__
+
+  uri = URI.parse("redis://rediscloud:VihpwBadAy7Snf0l@pub-redis-15557.us-east-1-2.4.ec2.garantiadata.com:15557")
+  $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 end

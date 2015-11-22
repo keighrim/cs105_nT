@@ -11,7 +11,7 @@ module NanoTwitter
           num.to_i.times do |i|
             Tweet.create(user_id: user.id, user_name: user.name,
                          content: Faker::Hacker.say_something_smart,
-                         tweeted_at: Faker::Time.backward(30, :all))
+                         tweeted_at: Time.now)
           end
           "Created #{num} Tweets"
         end

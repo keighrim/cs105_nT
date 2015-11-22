@@ -25,6 +25,11 @@ get '/loaderio-82d98309070f9f1c9315ff5dcd667982/' do
     'loaderio-82d98309070f9f1c9315ff5dcd667982'
 end
 
+#To reset/flush redis cloud database
+get '/redis/reset' do
+  $redis.flushall
+end
+
 get '/' do
   redirect '/timeline'
 end
@@ -82,10 +87,19 @@ end
 
 get '/timeline' do
   if session[:logged_in_user_name].nil?
-    @tweets = Tweet.all.order(tweeted_at: :desc).take(50)
+    if $redis.exists("timeline:recent:50")
+      @tweets = $redis.lrange("timeline:recent:50", 0, -1).map{|t| Tweet.new(JSON.parse(t))}
+    else
+      @tweets = Tweet.all.order(tweeted_at: :desc).take(50)
+      @timeline = @tweets.map{|t| t.to_json}
+      if(!@timeline.empty?)
+        $redis.rpush("timeline:recent:50", @timeline)
+      end
+    end
   else
-    @tweets = User.find(session[:logged_in_user_id]).feeds.order(tweeted_at: :desc)
+    @tweets = logged_in_user.timeline
   end
+
   erb :timeline
 end
 
@@ -121,32 +135,6 @@ get '/profile/:user_name' do |user_name|
     end
   end
 end
-
-=begin
-get '/profile/:user_id' do |user_id|
-  logged_in_user_id = session[:logged_in_user_id]
-  if logged_in_user.nil?
-    redirect '/register'
-  elsif user_id == logged_in_user_id
-    redirect '/profile'
-  else
-    @user = User.find_by_id(user_id)
-    if @user.nil?
-      'User does not exist'
-    else
-      @is_current_user = false
-      is_following = logged_in_user.followed_users.include?(@user)
-      if is_following
-        @following = true
-      else
-        @following = false
-      end
-      @tweets = @user.tweets
-      erb :profile
-    end
-  end
-end
-=end
 
 def logged_in_user
   User.find_by_id(session[:logged_in_user_id])

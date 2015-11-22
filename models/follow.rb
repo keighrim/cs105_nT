@@ -2,21 +2,14 @@ class Follow < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :followed_user, :class_name => "User"
 
-    after_create :add_followed_tweets
-    before_destroy :remove_followed_tweets
+    after_create :rebuild_redis
+    after_destroy :rebuild_redis
 
     private
 
-    def add_followed_tweets
-        tweets = self.followed_user.tweets
-        tweets.each do |tweet|
-            Timeline.create(user_id: self.user_id, tweet_id: tweet.id)
-        end
-    end
-
-    def remove_followed_tweets
-        tweet_ids = self.followed_user.tweets.pluck(:id)
-        Timeline.where(user_id: self.user_id, tweet_id: tweet_ids).destroy_all
+    def rebuild_redis
+        $redis.del("timeline:user:#{user.id}")
+        user.timeline
     end
     
     def self.follow(follower, followed)
