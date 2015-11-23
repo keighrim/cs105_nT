@@ -5,6 +5,10 @@ require './models/user'
 require './models/tweet'
 require './models/follow'
 
+require 'redis'
+uri = URI.parse("redis://rediscloud:VihpwBadAy7Snf0l@pub-redis-15557.us-east-1-2.4.ec2.garantiadata.com:15557")
+$redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+
 #integration test
 describe 'Integration - following' do
     
@@ -22,7 +26,7 @@ describe 'Integration - following' do
     user2_tweet = Tweet.make_tweet(@test_user_2, "test content by user 2", Time.now)
     @test_user.follow(@test_user_2)
     @test_user.followed_users.include?(@test_user_2).must_equal true
-    redis_timeline_record = $redis.lrange("timeline:user:#{@test_user.id}", 0, 0)
+    redis_timeline_record = $redis.lrange("timeline:user:#{@test_user.id}", 0, 0)[0]
     added_tweet_id = Tweet.new(JSON.parse(redis_timeline_record)).id
     added_tweet = Tweet.find(added_tweet_id)
     added_tweet.content.must_equal "test content by user 2"
@@ -36,7 +40,7 @@ describe 'Integration - following' do
       @test_user.follow(@test_user_2)
       @test_user.followed_users.include?(@test_user_2).must_equal true
       
-      redis_timeline_record = $redis.lrange("timeline:user:#{@test_user.id}", 0, 0)
+      redis_timeline_record = $redis.lrange("timeline:user:#{@test_user.id}", 0, 0)[0]
       added_tweet_id = Tweet.new(JSON.parse(redis_timeline_record)).id
       added_tweet = Tweet.find(added_tweet_id)
       added_tweet.content.must_equal "test content by user 2"
