@@ -12,11 +12,15 @@ class User < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true, length: { minimum: 2 }
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   
+  def as_json(options = {})
+    super(options.merge({ except: [:password] }))
+  end
+  
   def follow(other_user)
     if other_user.nil?
-      'Sorry, there was an error'
+      halt 400, 'Sorry, no such user'
     elsif self.id == other_user.id
-      'Cannot follow yourself'
+      halt 400, 'Cannot follow yourself'
     else
       self.followed_users << other_user
     end
@@ -24,7 +28,7 @@ class User < ActiveRecord::Base
   
   def unfollow(other_user)
     if other_user.nil?
-      'Sorry, there was an error'
+      halt 400, 'Sorry, no such user'
     else
       self.followed_users.destroy(other_user)
     end
