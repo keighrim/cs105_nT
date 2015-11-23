@@ -23,7 +23,7 @@ class Tweet < ActiveRecord::Base
   
   def self.make_tweet(user, content, tweeted_at)
     if user.nil?
-      'Sorry, there was an error'
+      'Sorry, no such user'
     end
   
     tweet = Tweet.new(:user_id=>user.id, :user_name=>user.name, :content=>content, tweeted_at: tweeted_at)
