@@ -23,14 +23,12 @@ class Tweet < ActiveRecord::Base
       'Sorry, no such user'
     end
   
-    begin
-      tweet = Tweet.new(:user_id=>user.id, :user_name=>user.name, :content=>content, tweeted_at: tweeted_at)
+    tweet = Tweet.new(:user_id=>user.id, :user_name=>user.name, :content=>content, tweeted_at: tweeted_at)
 
-      tweet.save
+    if tweet.save
       tweet
-    rescue Error => error
-      raise
-      # 'Sorry, there was an error!'
+    else
+      'Sorry, there was an error!'
     end
   end
 
