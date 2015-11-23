@@ -123,6 +123,12 @@ get '/profile/:user_name' do |user_name|
   end
 end
 
+get '/explore' do
+  @tweets = Tweet.order("RANDOM()").take(50)
+  @users = User.order("RANDOM()").take(20)
+  erb :explore
+end
+
 =begin
 get '/profile/:user_id' do |user_id|
   logged_in_user_id = session[:logged_in_user_id]
