@@ -11,12 +11,12 @@ This is a free software under [MIT license](LICENSE)
 TODO
 
 ## REST API
- as of 10/22/2015
+ as of 11/22/2015
 
-### GET /tweets/:tweet_id
+### GET /tweets?:tweet_id
 
 * Description: Returns a tweet based on its ID.
-* Resource URL: https://localhost:4567/api/v1/tweets/:id.json
+* Resource URL: https://localhost:4567/api/v1/tweets?id
 * Resource Information
     * Response formats: JSON
     * Requires authentication?: No
@@ -25,29 +25,32 @@ TODO
 
 ##### Example Request
 
-`GET https://localhost:4567/api/v1/tweets?id=123.json`
+`GET https://localhost:4567/api/v1/tweets?id=123`
 
 ```javascript
 { 
   "id": 123, 
-  "text": "foobar", 
-  "creator_id": 456,
+  "content": "foo", 
+  "user_id": 456,
+  "user_name": "bar",
   "created": "jan-11-2015"
 }
 ```
-### POST /tweets/:user_id
+### POST /tweets?:user_id
 
 * Description: Creates a new tweet and returns it.
-* Resource URL: https://localhost:4567/api/v1/tweets/:user_id.json
+* Resource URL: https://localhost:4567/api/v1/tweets?user_id
 * Resource Information
 	* Response formats: JSON
 	* Requires authentication?: No
 * Parameters
 	* user_id (*required*): The user id to be designated as the creator of the tweet.
-	* text (*optional*): The text of the tweet. Defaults to empty.
+	* text (*optional*): The text of the tweet. Defaults to random Faker string.
 
 ##### Example Request
-POST https://localhost:4567/api/v1/tweets?user_id=123&text=sample.json
+
+`POST https://localhost:4567/api/v1/tweets?user_id=123&text=sample`
+
 ```javascript
 { 
   "id": 101, 
@@ -57,65 +60,10 @@ POST https://localhost:4567/api/v1/tweets?user_id=123&text=sample.json
 }
 ```
 
-### GET /users/:user_id
-
-* Resource URL: https://localhost:4567/api/v1/users/:id.json
-* Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
-* Parameters
-	* id (*required*): The user id of the user whose information is to be returned.
-
-##### Example Request
-`GET https://localhost:4567/api/v1/users?user_id=123.json`
-```javascript
-{ 
-  "id": 123, 
-  "name": "John Doe"
-}
-```
-
-### POST /users/:name
-
-* Resource URL: https://localhost:4567/api/v1/users/:name.json
-* Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
-* Parameters
-	* name (*required*): The name of the user to create.
-
-##### Example Request
-`POST https://localhost:4567/api/v1/users.json?name=John+Doe`
-```javascript
-{ 
-  "id": 101, 
-  "name": "John Doe"
-}
-```
-
-
-### PUT /users/:id
-* Resource URL: https://localhost:4567/api/v1/users/:id.json
-* Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
-* Parameters
-	* id (*required*): The id of the user to update.
-	* name (*optional*): The new name of the user.
-
-##### Example Request
-`PUT https://localhost:4567/api/v1/users?id=101&name=Jane+Doe.json`
-```javascript
-{ 
-  "id": 101, 
-  "name": "Jane Doe"
-}
-```
-
-
 ### GET /tweets/recent
 
-* Resource URL: https://localhost:4567/api/v1/tweets/recent.json
+* Description: Retrieve *n* latest tweets from all users.
+* Resource URL: https://localhost:4567/api/v1/tweets/recent
 * Resource Information
 	* Response formats: JSON
 	* Requires authentication?: No
@@ -123,7 +71,9 @@ POST https://localhost:4567/api/v1/tweets?user_id=123&text=sample.json
 	* num (*optional*): Returns num recent tweets. Defaults to 10. Max of 50.
 
 ##### Example Request
-`GET https://localhost:4567/api/v1/tweets/recent?num=2.json`
+
+`GET https://localhost:4567/api/v1/tweets/recent?num=2`
+
 ```javascript
 [ 
   { 
@@ -141,9 +91,79 @@ POST https://localhost:4567/api/v1/tweets?user_id=123&text=sample.json
 ]
 ```
 
+### GET /users?:user_id
+
+* Description: Returns information of a user based on a ID.
+* Resource URL: https://localhost:4567/api/v1/users?id
+* Resource Information
+	* Response formats: JSON
+	* Requires authentication?: No
+* Parameters
+	* id (*required*): The user id of the user whose information is to be returned.
+
+##### Example Request
+
+`GET https://localhost:4567/api/v1/users?id=123`
+
+```javascript
+{ 
+  "id": 123, 
+  "name": "John Doe"
+}
+```
+
+### POST /users?:name&:email
+
+* Description: Creates a new account and returns it.
+* Resource URL: https://localhost:4567/api/v1/users?name
+* Resource Information
+	* Response formats: JSON
+	* Requires authentication?: No
+* Parameters
+	* name (*required*): The name of the user to create.
+    * email (*required*): The e-mail address of the user to create.
+
+##### Example Request
+
+`POST https://localhost:4567/api/v1/users?name=John+Doe`
+
+```javascript
+{ 
+  "id": 101, 
+  "name": "John Doe"
+}
+```
+
+
+### PUT /users?:id
+
+* Description: Updates user information and returns it. Changing password using this is not allowed.
+* Resource URL: https://localhost:4567/api/v1/users?id
+* Resource Information
+	* Response formats: JSON
+	* Requires authentication?: No
+* Parameters
+	* id (*required*): The id of the user to update.
+	* name (*optional*): The new name of the user.
+  * email (*optional*): The new email address of the user.
+
+##### Example Request
+
+`PUT https://localhost:4567/api/v1/users?id=101&name=Jane+Doe`
+
+```javascript
+{ 
+  "id": 101, 
+  "name": "Jane Doe"
+}
+```
+
+
+
 ### GET /users/:user_id/tweets
 
-* Resource URL: https://localhost:4567/api/v1/users/:user_id/tweets.json
+* Description: Retrieve *n* latest tweets from a specifin user.
+* Resource URL: https://localhost:4567/api/v1/users/:user_id/tweets
 * Resource Information
 	* Response formats: JSON
 	* Requires authentication?: No
@@ -152,7 +172,9 @@ POST https://localhost:4567/api/v1/tweets?user_id=123&text=sample.json
 	* num (*optional*): The number of recent tweets for this user to return. Defaults to 10. Max of 50.
 
 ##### Example Request
-`GET https://localhost:4567/api/v1/users/123/tweets?num=2.json`
+
+`GET https://localhost:4567/api/v1/users/123/tweets?num=2`
+
 ```javascript
 [ 
   { 
@@ -172,15 +194,18 @@ POST https://localhost:4567/api/v1/tweets?user_id=123&text=sample.json
 
 ### GET /users/:user_id/followers
 
-* Resource URL: https://localhost:4567/api/v1/users/:user_id/followers.json
+* Description: Return all followers of a user.
+* Resource URL: https://localhost:4567/api/v1/users/:user_id/followers
 * Resource Information
 	* Response formats: JSON
 	* Requires authentication?: No
 * Parameters
-	* user_id (*required*): The user id of the specific user whose tweets will be returned
+	* user_id (*required*): The user id of the specific user whose followers will be returned
 
 ##### Example Request
-`GET https://localhost:4567/api/v1/users/123/followers.json`
+
+`GET https://localhost:4567/api/v1/users/123/followers`
+
 ```javascript
 [
   { 

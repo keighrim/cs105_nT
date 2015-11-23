@@ -3,6 +3,8 @@ require 'sinatra/activerecord'
 require './config/environments' # database configuration
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/test/test*.rb'].each {|file| require file }
+
+Dir[File.dirname(__FILE__) + '/api/v1/*.rb'].each {|file| require file }
 enable :sessions
 
 after {ActiveRecord::Base.connection.close}
@@ -11,6 +13,9 @@ register NanoTwitter::Test::Reset
 register NanoTwitter::Test::Tweets
 register NanoTwitter::Test::Seed
 register NanoTwitter::Test::FollowTest
+
+register NanoTwitter::Rest::V1::Tweets
+register NanoTwitter::Rest::V1::Users
 
 
 # Some global configurations
@@ -35,7 +40,7 @@ post '/login' do
   u = User.find_by(name: username, password: password)
   if u.nil?
     #add a redirect to a invalid login page
-    'Invalid login credentials'
+    halt 401.1, 'Invalid login credentials'
   else
     session[:logged_in_user_id] = u.id
     session[:logged_in_user_name] = u.name
@@ -60,7 +65,7 @@ post '/register' do
     session[:logged_in_user_name] = new_user.name
     redirect '/'
   else
-    'Sorry, there was an error!'
+    halt 500, 'Sorry, there was an error!'
   end
 end
 
@@ -105,7 +110,7 @@ get '/profile/:user_name' do |user_name|
   else
     @user = User.where(name: user_name).first
     if @user.nil?
-      "Oops, user \"#{user_name}\" does not exist"
+      halt 404, "Sorry, user \"#{user_name}\" does not exist"
     else
       @is_current_user = false
       if !logged_in_user.nil?
