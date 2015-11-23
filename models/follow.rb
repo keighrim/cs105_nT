@@ -21,9 +21,9 @@ class Follow < ActiveRecord::Base
     
     def self.follow(follower, followed)
         if followed.nil?
-            halt 400, 'Sorry, no such user'
+            'Sorry, there was an error'
         elsif follower.id == followed.id
-            halt 400, 'Cannot follow yourself'
+            'Cannot follow yourself'
         else
             follower.followed_users << followed
         end
@@ -31,7 +31,7 @@ class Follow < ActiveRecord::Base
 
     def self.unfollow(unfollower, unfollowed)
         if unfollowed.nil?
-            halt 400, 'Sorry, no such user'
+            'Sorry, there was an error'
         else
             unfollower.followed_users.destroy(unfollowed)
         end
