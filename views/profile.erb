@@ -16,6 +16,7 @@
             <ul class="nav navbar-nav pull-right">
                 <li><a href = '/timeline'>Timeline interface</a></li>
                 <% if !session[:logged_in_user_id].nil?  %>
+                    <li><a href = '/explore'>Explore</a></li>
                     <li><a href = '/profile'>Hi, <%= session[:logged_in_user_name]%> </a>
                     <li><a href = '/logout'>Log-out</a></li>
                 <% else %>

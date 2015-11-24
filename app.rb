@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'newrelic_rpm'
 require 'sinatra/activerecord'
 require './config/environments' # database configuration
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
@@ -139,6 +140,12 @@ get '/profile/:user_name' do |user_name|
       erb :profile
     end
   end
+end
+
+get '/explore' do
+  @tweets = Tweet.order("RANDOM()").take(50)
+  @users = User.order("RANDOM()").take(20)
+  erb :explore
 end
 
 def logged_in_user
