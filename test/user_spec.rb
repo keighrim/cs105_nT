@@ -3,7 +3,6 @@ require 'sinatra/activerecord'
 
 require './models/user'
 require './models/tweet'
-require './models/timeline'
 require './models/follow'
 
 describe User do

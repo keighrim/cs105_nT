@@ -28,6 +28,12 @@ all_users.each do |user|
   end
 end
 
+#Set the 50 recent tweets cache in redis
+$redis.del("timeline:recent:50")
+@tweets = Tweet.all.order(tweeted_at: :desc).take(50)
+@timeline = @tweets.map{|t| t.to_json}
+$redis.rpush("timeline:recent:50", @timeline)
+
 
 
 
