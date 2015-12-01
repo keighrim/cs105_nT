@@ -5,7 +5,7 @@ module NanoTwitter
 
       def self.registered(app)
 
-        app.get '/test/reset' do
+        app.get '/test/reset/testuser' do
           session[:logged_in_user_id] = nil
           session[:logged_in_user_name] = nil
           @user = User.find_by(name: 'testuser')
@@ -19,8 +19,20 @@ module NanoTwitter
             $redis.del("timeline:recent:50")
           end
 
-          "Test Reset Run Successful"
+          "Test Reset for \"testuser\" Successful"
         end
+
+        app.get '/test/reset/all' do
+          session[:logged_in_user_id] = nil
+          session[:logged_in_user_name] = nil
+          Tweet.delete_all
+          Follow.delete_all
+          User.delete_all
+          $redis.flushall
+          User.new(name: 'testuser', email: 'test@u.ser', password: 'test').save
+          "Total Reset Complete <br> User \"testuser\" Created"
+        end
+
       end
     end
   end
