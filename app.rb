@@ -14,6 +14,7 @@ register NanoTwitter::Test::Reset
 register NanoTwitter::Test::Tweets
 register NanoTwitter::Test::Seed
 register NanoTwitter::Test::FollowTest
+register NanoTwitter::Test::Status
 
 register NanoTwitter::Rest::V1::Tweets
 register NanoTwitter::Rest::V1::Users
@@ -34,6 +35,7 @@ end
 #To reset/flush redis cloud database
 get '/redis/reset' do
   $redis.flushall
+  "All Redis Caches Cleared"
 end
 
 get '/' do
