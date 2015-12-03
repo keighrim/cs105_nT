@@ -28,9 +28,13 @@ class Tweet < ActiveRecord::Base
   
     tweet = Tweet.new(:user_id=>user.id, :user_name=>user.name, :content=>content, tweeted_at: tweeted_at)
 
+    puts "hereeeee"
+
     if tweet.save
+        puts "no error!"
       tweet
     else
+        puts "errorrrrr"
       'Sorry, there was an error!'
     end
   end

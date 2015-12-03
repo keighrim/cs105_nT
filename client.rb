@@ -1,5 +1,6 @@
 require 'typhoeus'
 require 'json'
+require 'uri'
 
 class User
     class << self; attr_accessor :base_uri end
@@ -104,14 +105,66 @@ class User
         end
     end
 
-
-
-
-    
-
 end
 
 
+class Tweet
+    class << self; attr_accessor :base_uri end
+
+    def self.get_tweets_by_id(id)
+        response = Typhoeus::Request.get(
+            "#{base_uri}/api/v1/tweets?id=#{id}")
+        if response.code == 200
+            JSON.parse(response.body)
+        elsif response.code == 404
+            nil
+        else
+            raise response.body
+        end
+    end
+
+
+    def self.create_tweet(id, text)
+        response = Typhoeus::Request.post(
+            "#{base_uri}/api/v1/tweets?id=#{id}&text=#{URI::encode(text)}")
+
+        if response.code == 200
+            JSON.parse(response.body)
+        elsif response.code == 404
+            nil
+        else
+            raise response.body
+        end
+    end
+
+    def self.get_recent_tweets()
+        response = Typhoeus::Request.get(
+            "#{base_uri}/api/v1/tweets/recent")
+        if response.code == 200
+            JSON.parse(response.body)
+        elsif response.code == 404
+            nil
+        else
+            raise response.body
+        end
+    end
+
+    def self.get_num_recent_tweets(num)
+        response = Typhoeus::Request.get(
+            "#{base_uri}/api/v1/tweets/recent?num=#{num}")
+        if response.code == 200
+            JSON.parse(response.body)
+        elsif response.code == 404
+            nil
+        else
+            raise response.body
+        end
+    end
+
+end
+
+#sample usage. still needs proper tests
+=begin
 User.base_uri = "http://localhost:4567"
 json_output = User.find_by_id(1)
 puts json_output
@@ -134,3 +187,17 @@ puts json_output
 json_output = User.get_tweets_by_user_and_num(1, 3)
 puts json_output
 
+
+Tweet.base_uri = "http://localhost:4567"
+#json_output = Tweet.get_tweets_by_id(2)
+#puts json_output
+
+json_output = Tweet.create_tweet(1, "this is my tweet. wooo")
+puts json_output
+
+json_output = Tweet.get_recent_tweets()
+puts json_output
+json_output = Tweet.get_num_recent_tweets(4)
+puts json_output
+
+=end
