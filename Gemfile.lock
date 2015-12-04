@@ -33,6 +33,7 @@ GEM
     ffi (1.9.10)
     i18n (0.7.0)
     json (1.8.3)
+    logger (1.2.8)
     minitest (5.8.0)
     newrelic_rpm (3.14.0.305)
     pg (0.18.3)
@@ -80,6 +81,7 @@ DEPENDENCIES
   binding_of_caller
   faker
   json
+  logger
   newrelic_rpm
   pg
   puma
@@ -89,3 +91,6 @@ DEPENDENCIES
   sqlite3
   tux
   typhoeus
+
+BUNDLED WITH
+   1.10.6
