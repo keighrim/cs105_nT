@@ -12,7 +12,7 @@ module NanoTwitter
             sleep(5)
             400
           end
-          all_users = (1..User.count).to_a    # DB index starts from 1, not 0
+          all_users = User.all.pluck(:id)
           all_users.delete(testuser.id)
           num.to_i.times do |i|
             if all_users.size == 0
