@@ -144,6 +144,14 @@ get '/profile/:user_name' do |user_name|
   end
 end
 
+post '/user/testuser/tweet/:num' do |num|
+  redirect "test/tweets/#{num}"
+end
+
+get '/user/:user_name' do |user_name|
+  redirect "profile/#{user_name}"
+end
+
 get '/explore' do
   @tweets = Tweet.order("RANDOM()").take(50)
   @users = User.order("RANDOM()").take(20)
