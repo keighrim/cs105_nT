@@ -55,6 +55,7 @@ module NanoTwitter
 
           app.get '/api/v1/users/:user_id/tweets' do |user_id|
             num = params['num'] || 10
+            num = num.to_i
             if num > 50
               num = 50
             end
