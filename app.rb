@@ -144,7 +144,7 @@ get '/profile/:user_name' do |user_name|
   end
 end
 
-get '/user/testuser/tweet/:num' do |num|
+post '/user/testuser/tweet/:num' do |num|
   redirect "test/tweets/#{num}"
 end
 
