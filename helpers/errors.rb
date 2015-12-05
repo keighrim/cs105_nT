@@ -10,6 +10,10 @@ module NanoTwitter
         halt 400, "User not found: #{username}".to_json
       end
 
+      def bad_request_error(message)
+        halt 400, message
+      end
+
       def follow_loop_error
         halt 500, 'Cannot follow yourself'.to_json
       end
