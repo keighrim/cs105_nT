@@ -8,6 +8,7 @@ Dir[File.dirname(__FILE__) + '/test/test*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/helpers/*.rb'].each {|file| require file }
 
 Dir[File.dirname(__FILE__) + '/api/v1/*.rb'].each {|file| require file }
+
 enable :sessions
 
 log = Logger.new(STDOUT)
@@ -21,11 +22,11 @@ register NanoTwitter::Test::Seed
 register NanoTwitter::Test::FollowTest
 register NanoTwitter::Test::Status
 
-helpers NanoTwitter::Helpers::Errors
-helpers NanoTwitter::Helpers
-
 register NanoTwitter::Rest::V1::Tweets
 register NanoTwitter::Rest::V1::Users
+
+helpers NanoTwitter::Helpers::Errors
+helpers NanoTwitter::Helpers
 
 env_index = ARGV.index("-e")
 env_arg = ARGV[env_index + 1] if env_index
@@ -62,7 +63,9 @@ get '/redis/reset' do
 end
 
 get '/' do
-  redirect '/timeline'
+  redirect "/profile/#{logged_in_user.name}" unless logged_in_user.nil?
+  get_global_timeline
+  erb :timeline
 end
 
 post '/login' do
@@ -93,7 +96,6 @@ post '/register' do
     redirect '/'
   else
     internal_error
-    # halt 500, 'Sorry, there was an error!'
   end
 end
 
@@ -101,30 +103,6 @@ post '/tweet' do
   user = logged_in_user
   @tweet = Tweet.make_tweet(user, params[:content], Time.now)
   redirect back
-end
-
-get '/profile' do
-  @user = logged_in_user
-  redirect '/register' if @user.nil?
-  @tweets = @user.tweets.order(tweeted_at: :desc)
-  erb :profile
-end
-
-get '/timeline' do
-  if session[:logged_in_user_name].nil?
-    if $redis.exists("timeline:recent:50")
-      @tweets = $redis.lrange("timeline:recent:50", 0, -1).map{|t| Tweet.new(JSON.parse(t))}
-    else
-      @tweets = Tweet.all.order(tweeted_at: :desc).take(50)
-      @timeline = @tweets.map{|t| t.to_json}
-      $redis.rpush("timeline:recent:50", @timeline) if !@timeline.empty?
-    end
-  else
-    redirect "/user/#{session[:logged_in_user_name]}"
-    # @tweets = logged_in_user.timeline
-  end
-
-  erb :timeline
 end
 
 post '/follows' do
@@ -137,17 +115,21 @@ post '/unfollows' do
   redirect back
 end
 
+get '/profile' do
+  redirect "/profile/#{logged_in_user.name}"
+end
+
 get '/profile/:user_name' do |user_name|
-  redirect '/profile' if user_name ==  session[:logged_in_user_name]
-  @user = User.where(name: user_name).first
+  @user = User.find_by(name: user_name)
   user_not_found_error(user_name) if @user.nil?
-  @is_current_user = false
-  if !logged_in_user.nil?
-    is_following = logged_in_user.followed_users.include?(@user)
+  @following = is_following?
+  if params['h'] == '1'
+    get_history(@user)
+    erb :history
+  else
+    get_timeline(@user)
+    erb :profile
   end
-  is_following ? @following = true : @following = false
-  @tweets = @user.tweets.order(tweeted_at: :desc)
-  erb :profile
 end
 
 post '/user/testuser/tweet/:num' do |num|
@@ -155,9 +137,7 @@ post '/user/testuser/tweet/:num' do |num|
 end
 
 get '/user/:user_name' do |user_name|
-  user = User.find_by_name(user_name)
-  @tweets = user.timeline
-  erb :timeline
+  redirect "/profile/#{user_name}"
 end
 
 get '/explore' do
