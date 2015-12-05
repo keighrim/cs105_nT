@@ -16,7 +16,7 @@ module NanoTwitter
               saved = u.save
             end
           end
-          "Created #{num} Users"
+          success "Created #{num} Users"
         end
       end
     end
