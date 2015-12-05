@@ -123,7 +123,8 @@ get '/timeline' do
       end
     end
   else
-    @tweets = logged_in_user.timeline
+    redirect "/user/#{session[:logged_in_user_name]}"
+    # @tweets = logged_in_user.timeline
   end
 
   erb :timeline
@@ -167,7 +168,9 @@ post '/user/testuser/tweet/:num' do |num|
 end
 
 get '/user/:user_name' do |user_name|
-  redirect "profile/#{user_name}"
+  user = User.find_by_name(user_name)
+  @tweets = user.timeline
+  erb :timeline
 end
 
 get '/explore' do

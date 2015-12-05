@@ -14,6 +14,7 @@ class Tweet < ActiveRecord::Base
     @users_to_insert << user
     @users_to_insert.each do |u|
       $redis.lpushx("timeline:user:#{u.id}", self.to_json)
+      $redis.ltrim("timeline:user:#{u.id}", 0, 49)
     end
   
     #Add to the 50 recent tweets timeline in redis

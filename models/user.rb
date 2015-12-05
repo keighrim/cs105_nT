@@ -36,7 +36,12 @@ class User < ActiveRecord::Base
     if $redis.exists("timeline:user:#{self.id}")
       $redis.lrange("timeline:user:#{self.id}", 0, -1).map{|t| Tweet.new(JSON.parse(t))}
     else
-      @timeline = Tweet.find_by_sql("SELECT DISTINCT T.* FROM tweets AS T, follows AS F WHERE (F.user_id = '#{self.id}' AND F.followed_user_id = T.user_id) OR T.user_id = '#{self.id}' ORDER BY tweeted_at DESC")
+      @timeline = Tweet.find_by_sql('SELECT DISTINCT T.* '\
+       'FROM tweets AS T, follows AS F '\
+       "WHERE (F.user_id = '#{self.id}' AND F.followed_user_id = T.user_id) "\
+              "OR T.user_id = '#{self.id}' "\
+       'ORDER BY tweeted_at DESC')
+      @timeline = @timeline[0,50]
       @tweets = @timeline.map{|t| t.to_json}
       if !@tweets.empty?
         $redis.rpush("timeline:user:#{self.id}", @tweets)
