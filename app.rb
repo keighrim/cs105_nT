@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'newrelic_rpm'
+require 'logger'
 require 'sinatra/activerecord'
 require './config/environments' # database configuration
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
@@ -7,6 +8,9 @@ Dir[File.dirname(__FILE__) + '/test/test*.rb'].each {|file| require file }
 
 Dir[File.dirname(__FILE__) + '/api/v1/*.rb'].each {|file| require file }
 enable :sessions
+
+log = Logger.new(STDOUT)
+log.level = Logger::DEBUG 
 
 after {ActiveRecord::Base.connection.close}
 
@@ -19,12 +23,26 @@ register NanoTwitter::Test::Status
 register NanoTwitter::Rest::V1::Tweets
 register NanoTwitter::Rest::V1::Users
 
+env_index = ARGV.index("-e")
+env_arg = ARGV[env_index + 1] if env_index
+env = env_arg || ENV["SINATRA_ENV"] || "development"
 
 # Some global configurations
 configure do
   set :version, '0.5'
   set :app_name, 'Nano Twitter'
   set :authors, ['Allan Chesarone', 'Keigh Rim', 'Shu Chen', 'Vladimir Susaya']
+end
+
+if env == 'test'
+  User.destroy_all
+  Tweet.destroy_all
+  u1 = User.create({id:1, name: "clientUser1", email: "client1@mail.com", password: 'client'})
+  u2 = User.create({id:2, name: "clientUser2", email: "client2@mail.com", password: 'client'})
+  Tweet.make_tweet(u1,"client 1 tweeted stuff.",Time.now)
+  Tweet.make_tweet(u1,"client 1 tweeted stuff again.",Time.now)
+  Tweet.make_tweet(u2,"client 2 also tweeted stuff.",Time.now)
+  log.debug "fixture data created in test database..."
 end
 
 # For loader.io verification
@@ -142,6 +160,14 @@ get '/profile/:user_name' do |user_name|
       erb :profile
     end
   end
+end
+
+post '/user/testuser/tweet/:num' do |num|
+  redirect "test/tweets/#{num}"
+end
+
+get '/user/:user_name' do |user_name|
+  redirect "profile/#{user_name}"
 end
 
 get '/explore' do

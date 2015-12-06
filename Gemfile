@@ -18,3 +18,8 @@ gem 'newrelic_rpm'
 gem 'puma'
 
 gem 'redis', '~>3.2'
+
+gem 'typhoeus'
+gem 'json'
+
+gem 'logger'
