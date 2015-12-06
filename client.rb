@@ -2,164 +2,81 @@ require 'typhoeus'
 require 'json'
 require 'uri'
 
+def parse_response(response)
+  if response.code == 200
+    JSON.parse(response.body)
+  elsif response.code == 404
+    nil
+  else
+    raise response.body
+  end
+end
+
+def get(url)
+  Typhoeus::Request.get(url)
+end
+
+def post(url)
+  Typhoeus::Request.post(url)
+end
+
+def put(url)
+  Typhoeus::Request.put(url)
+end
+
+
 class User
-    class << self; attr_accessor :base_uri end
+  class << self; attr_accessor :base_uri end
 
-    def self.find_by_id(id)
-        response = Typhoeus::Request.get(
-            "#{base_uri}/api/v1/users?id=#{id}")
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
+  def self.find_by_id(id)
+    parse_response(get("#{base_uri}/api/v1/users?id=#{id}"))
+  end
 
-    def self.create_user(name, email,password)
-        response = Typhoeus::Request.post(
-            "#{base_uri}/api/v1/users?name=#{name}&email=#{email}&password=#{password}")
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
+  def self.create_user(name, email,password)
+    parse_response(post("#{base_uri}/api/v1/users?name=#{name}&email=#{email}&password=#{password}"))
+  end
 
-    def self.update_user_name(id, newname)
+  def self.update_user(id, name, email)
+    parse_response(put("#{base_uri}/api/v1/users?id=#{id}&name=#{name}&email=#{email}"))
+  end
 
-        response = Typhoeus::Request.put(
-            "#{base_uri}/api/v1/users?id=#{id}&name=#{newname}")
+  def self.update_user_name(id, newname)
+    parse_response(put("#{base_uri}/api/v1/users?id=#{id}&name=#{newname}"))
 
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
+  end
 
-    def self.update_user_email(id, email)
+  def self.update_user_email(id, email)
+    parse_response(put("#{base_uri}/api/v1/users?id=#{id}&email=#{email}"))
+  end
 
-        response = Typhoeus::Request.put(
-            "#{base_uri}/api/v1/users?id=#{id}&email=#{email}")
+  def self.get_tweets_by_user(id)
+    parse_response(get("#{base_uri}/api/v1/users/#{id}/tweets"))
+  end
 
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
-
-    def self.update_user(id, name, email)
-        response = Typhoeus::Request.put(
-            "#{base_uri}/api/v1/users?id=#{id}&name=#{name}&email=#{email}")
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
-
-    def self.get_tweets_by_user(id)
-        response = Typhoeus::Request.put(
-            "#{base_uri}/api/v1/users?id=#{id}")
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
-
-    def self.get_tweets_by_user(id)
-        response = Typhoeus::Request.get(
-            "#{base_uri}/api/v1/users/#{id}/tweets")
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
-
-    def self.get_tweets_by_user_and_num(id, num)
-        response = Typhoeus::Request.get(
-            "#{base_uri}/api/v1/users/#{id}/tweets?num=#{num}")
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
-
+  def self.get_tweets_by_user_and_num(id, num)
+    parse_response(get("#{base_uri}/api/v1/users/#{id}/tweets?num=#{num}"))
+  end
 end
 
 
 class Tweet
-    class << self; attr_accessor :base_uri end
+  class << self; attr_accessor :base_uri end
 
-    def self.get_tweets_by_id(id)
-        response = Typhoeus::Request.get(
-            "#{base_uri}/api/v1/tweets?id=#{id}")
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
+  def self.get_tweets_by_id(id)
+    parse_response(get("#{base_uri}/api/v1/tweets?id=#{id}"))
+  end
 
+  def self.create_tweet(id, text)
+    parse_response(post("#{base_uri}/api/v1/tweets?id=#{id}&text=#{URI::encode(text)}"))
+  end
 
-    def self.create_tweet(id, text)
-        response = Typhoeus::Request.post(
-            "#{base_uri}/api/v1/tweets?id=#{id}&text=#{URI::encode(text)}")
+  def self.get_recent_tweets()
+    parse_response(get("#{base_uri}/api/v1/tweets/recent"))
+  end
 
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
-
-    def self.get_recent_tweets()
-        response = Typhoeus::Request.get(
-            "#{base_uri}/api/v1/tweets/recent")
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
-
-    def self.get_num_recent_tweets(num)
-        response = Typhoeus::Request.get(
-            "#{base_uri}/api/v1/tweets/recent?num=#{num}")
-        if response.code == 200
-            JSON.parse(response.body)
-        elsif response.code == 404
-            nil
-        else
-            raise response.body
-        end
-    end
+  def self.get_num_recent_tweets(num)
+    parse_response(get("#{base_uri}/api/v1/tweets/recent?num=#{num}"))
+  end
 
 end
 
