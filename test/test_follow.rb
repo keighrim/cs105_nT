@@ -6,23 +6,18 @@ module NanoTwitter
 
         app.get '/test/follow/:num' do |num|
           testuser = User.find_by(name: 'testuser')
-          if testuser.nil?
-            # TODO need a error page
-            'No test user registered. Going back to main in 5 secs.'
-            sleep(5)
-            400
-          end
+          bad_request_error 'No test user registered. Going back to main in 5 secs.' if testuser.nil?
           all_users = User.all.pluck(:id)
           all_users.delete(testuser.id)
           num.to_i.times do |i|
             if all_users.size == 0
-              400
+              bad_request_error 'All users are following testuser'
             end
             follower_id = all_users.delete_at(rand(all_users.count))
             follower = User.find_by_id(follower_id)
             follower.followed_users << testuser
           end
-          "Created #{num} Follows for testuser"
+          success "Created #{num} Follows for testuser"
         end
 
       end

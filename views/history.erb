@@ -68,18 +68,14 @@
 <div class="row" style="padding-left:10px; padding-right:10px">
     <div class="col-md-8 col-md-offset-1">
         <table valign><tr>
-            <th> <h3>Timeline</h3> </th>
+            <th><a href="/profile/<%= @user.name%>"><h3>Timeline</h3></a> </th>
             <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-            <th> <a href="/profile/<%= @user.name%>?h=1"><h3 >History</h3></a> </th>
+            <th><h3>History</h3></th>
         </tr></table>
         <ul>
             <% @tweets.each do |t|%>
-                <% op = t.user_name %>
-                <li><%=
-                    "<a href=\"/profile/#{op}\"> #{op} </a> : #{t.content}"
-                %></li>
+                <li><%=t.content %></br></li>
             <% end %>
-
         </ul>
     </div>
     <div class="col-md-3">
