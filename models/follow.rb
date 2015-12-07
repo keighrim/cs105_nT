@@ -9,7 +9,7 @@ class Follow < ActiveRecord::Base
 
     def rebuild_redis
         $redis.del("timeline:user:#{user.id}")
-        user.timeline
+        # user.timeline
     end
     
     def self.follow(follower, followed)
