@@ -32,5 +32,9 @@ module NanoTwitter
       !logged_in_user.nil? && logged_in_user.followed_users.include?(@user)
     end
 
+    def tweet(user, text)
+      Tweet.make_tweet(user, text, Time.now)
+    end
+
   end
 end
