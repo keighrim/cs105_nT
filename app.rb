@@ -2,11 +2,11 @@ require 'sinatra'
 require 'newrelic_rpm'
 require 'logger'
 require 'sinatra/activerecord'
+require 'sinatra/partial'
 require './config/environments' # database configuration
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/test/test*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/helpers/*.rb'].each {|file| require file }
-
 Dir[File.dirname(__FILE__) + '/api/v1/*.rb'].each {|file| require file }
 
 enable :sessions
@@ -34,9 +34,10 @@ env = env_arg || ENV["SINATRA_ENV"] || "development"
 
 # Some global configurations
 configure do
-  set :version, '0.5'
+  set :version, '0.7'
   set :app_name, 'Nano Twitter'
   set :authors, ['Allan Chesarone', 'Keigh Rim', 'Shu Chen', 'Vladimir Susaya']
+  set :partial_template_engine, :erb
 end
 
 if env == 'test'
@@ -65,7 +66,6 @@ end
 get '/' do
   redirect "/profile/#{logged_in_user.name}" unless logged_in_user.nil?
   get_global_timeline
-  erb :timeline
 end
 
 post '/login' do
@@ -85,7 +85,10 @@ get '/logout' do
 end
 
 get '/register' do
-  erb :register
+  output = ""
+  output << partial( :navbar )
+  output << partial( :register )
+  output
 end
 
 post '/register' do
@@ -120,16 +123,28 @@ get '/profile' do
 end
 
 get '/profile/:user_name' do |user_name|
+  output = partial( :navbar )
   @user = User.find_by(name: user_name)
   user_not_found_error(user_name) if @user.nil?
-  @following = is_following?
+  output << partial( :info )
   if params['h'] == '1'
     get_history(@user)
-    erb :history
+    output << partial( :history )
   else
     get_timeline(@user)
-    erb :profile
+    output << partial( :profile )
+    output << partial( :timeline )
   end
+  output
+end
+
+get '/network/:user_name' do |user_name|
+  output = partial( :navbar )
+  @user = User.find_by(name: user_name)
+  user_not_found_error(user_name) if @user.nil?
+  output << partial( :info )
+  output << partial( :follows )
+  output
 end
 
 post '/user/testuser/tweet/:num' do |num|
@@ -143,6 +158,9 @@ end
 get '/explore' do
   @tweets = Tweet.order("RANDOM()").take(50)
   @users = User.order("RANDOM()").take(20)
-  erb :explore
+  output = partial( :navbar )
+  output << partial( :timeline )
+  output << partial( :suggested )
+  output
 end
 
