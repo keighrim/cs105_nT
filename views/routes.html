@@ -1,0 +1,274 @@
+<h2>REST API</h2>
+
+<p>as of 11/22/2015</p>
+
+<div ng-click="expand(restapi[0])">
+<h3><b ng-show="!restapi[0].show">></b>
+<b ng-show="restapi[0].show">v</b>  {{restapi[0].content}}</h3>
+<div ng-show="restapi[0].show">
+<ul>
+<li>Description: Returns a tweet based on its ID.</li>
+<li>Resource URL: https://localhost:4567/api/v1/tweets?id</li>
+<li>Resource Information
+<ul><li>Response formats: JSON</li>
+<li>Requires authentication?: No</li></ul></li>
+<li>Parameters
+<ul><li>id (<em>required</em>): The tweet id of the specific tweet to return.</li></ul></li>
+</ul>
+
+<h5>Example Request</h5>
+
+<pre>
+<p><code>GET https://localhost:4567/api/v1/tweets?id=123</code></p>
+
+<p><code>javascript
+{ 
+  "id": 123, 
+  "content": "foo", 
+  "user_id": 456,
+  "user_name": "bar",
+  "created": "jan-11-2015"
+}
+</code></p>
+</pre>
+</div>
+</div>
+
+<div ng-click="expand(restapi[1])">
+<h3><b ng-show="!restapi[1].show">></b>
+<b ng-show="restapi[1].show">v</b>  {{restapi[1].content}}</h3>
+<div ng-show="restapi[1].show">
+<ul>
+<li>Description: Creates a new tweet and returns it.</li>
+<li>Resource URL: https://localhost:4567/api/v1/tweets?user_id</li>
+<li>Resource Information
+<ul><li>Response formats: JSON</li>
+<li>Requires authentication?: No</li></ul></li>
+<li>Parameters
+<ul><li>user_id (<em>required</em>): The user id to be designated as the creator of the tweet.</li>
+<li>text (<em>optional</em>): The text of the tweet. Defaults to random Faker string.</li></ul></li>
+</ul>
+
+<h5>Example Request</h5>
+<pre>
+<p><code>POST https://localhost:4567/api/v1/tweets?user_id=123&amp;text=sample</code></p>
+
+<p><code>javascript
+{ 
+  "id": 101, 
+  "text": "sample", 
+  "creator_id": 123,
+  "created": "jan-11-2015"
+}
+</code></p>
+</pre>
+</div>
+</div>
+
+<div ng-click="expand(restapi[2])">
+<h3><b ng-show="!restapi[2].show">></b>
+<b ng-show="restapi[2].show">v</b>  {{restapi[2].content}}</h3>
+<div ng-show="restapi[2].show">
+<ul>
+<li>Description: Retrieve <em>n</em> latest tweets from all users.</li>
+<li>Resource URL: https://localhost:4567/api/v1/tweets/recent</li>
+<li>Resource Information
+<ul><li>Response formats: JSON</li>
+<li>Requires authentication?: No</li></ul></li>
+<li>Parameters
+<ul><li>num (<em>optional</em>): Returns num recent tweets. Defaults to 10. Max of 50.</li></ul></li>
+</ul>
+
+<h5>Example Request</h5>
+<pre>
+<p><code>GET https://localhost:4567/api/v1/tweets/recent?num=2</code></p>
+
+<p><code>javascript
+[ 
+  { 
+    "id": 1, 
+    "text": "foobar", 
+    "creator_id": 456,
+    "created": "jan-11-2015"
+  },
+  { 
+    "id": 2, 
+    "text": "foobar", 
+    "creator_id": 789,
+    "created": "jan-12-2015"
+  }
+]
+</code></p>
+</pre>
+</div>
+</div>
+
+<div ng-click="expand(restapi[3])">
+<h3><b ng-show="!restapi[3].show">></b>
+<b ng-show="restapi[3].show">v</b>  {{restapi[3].content}}</h3>
+<div ng-show="restapi[3].show">
+<ul>
+<li>Description: Returns information of a user based on a ID.</li>
+<li>Resource URL: https://localhost:4567/api/v1/users?id</li>
+<li>Resource Information
+<ul><li>Response formats: JSON</li>
+<li>Requires authentication?: No</li></ul></li>
+<li>Parameters
+<ul><li>id (<em>required</em>): The user id of the user whose information is to be returned.</li></ul></li>
+</ul>
+
+<h5>Example Request</h5>
+<pre>
+<p><code>GET https://localhost:4567/api/v1/users?id=123</code></p>
+
+<p><code>javascript
+{ 
+  "id": 123, 
+  "name": "John Doe"
+}
+</code></p>
+</pre>
+</div>
+</div>
+
+<div ng-click="expand(restapi[4])">
+<h3><b ng-show="!restapi[4].show">></b>
+<b ng-show="restapi[4].show">v</b>  {{restapi[4].content}}</h3>
+<div ng-show="restapi[4].show">
+
+<ul>
+<li>Description: Creates a new account and returns it.</li>
+<li>Resource URL: https://localhost:4567/api/v1/users?name</li>
+<li>Resource Information
+<ul><li>Response formats: JSON</li>
+<li>Requires authentication?: No</li></ul></li>
+<li>Parameters
+<ul><li>name (<em>required</em>): The name of the user to create.</li>
+<li>email (<em>required</em>): The e-mail address of the user to create.</li></ul></li>
+</ul>
+
+<h5>Example Request</h5>
+<pre>
+<p><code>POST https://localhost:4567/api/v1/users?name=John+Doe</code></p>
+
+<p><code>javascript
+{ 
+  "id": 101, 
+  "name": "John Doe"
+}
+</code></p>
+</pre>
+</div>
+</div>
+
+<div ng-click="expand(restapi[5])">
+<h3><b ng-show="!restapi[5].show">></b>
+<b ng-show="restapi[5].show">v</b>  {{restapi[5].content}}</h3>
+<div ng-show="restapi[5].show">
+
+<ul>
+<li>Description: Updates user information and returns it. Changing password using this is not allowed.</li>
+<li>Resource URL: https://localhost:4567/api/v1/users?id</li>
+<li>Resource Information
+<ul><li>Response formats: JSON</li>
+<li>Requires authentication?: No</li></ul></li>
+<li>Parameters
+<ul><li>id (<em>required</em>): The id of the user to update.</li>
+<li>name (<em>optional</em>): The new name of the user.</li>
+<li>email (<em>optional</em>): The new email address of the user.</li></ul></li>
+</ul>
+
+<h5>Example Request</h5>
+<pre>
+<p><code>PUT https://localhost:4567/api/v1/users?id=101&amp;name=Jane+Doe</code></p>
+
+<p><code>javascript
+{ 
+  "id": 101, 
+  "name": "Jane Doe"
+}
+</code></p>
+</pre>
+</div>
+</div>
+
+<div ng-click="expand(restapi[6])">
+<h3><b ng-show="!restapi[6].show">></b>
+<b ng-show="restapi[6].show">v</b>  {{restapi[6].content}}</h3>
+<div ng-show="restapi[6].show">
+
+<ul>
+<li>Description: Retrieve <em>n</em> latest tweets from a specifin user.</li>
+<li>Resource URL: https://localhost:4567/api/v1/users/:user_id/tweets</li>
+<li>Resource Information
+<ul><li>Response formats: JSON</li>
+<li>Requires authentication?: No</li></ul></li>
+<li>Parameters
+<ul><li>user_id (<em>required</em>): The user id of the specific user whose tweets will be returned</li>
+<li>num (<em>optional</em>): The number of recent tweets for this user to return. Defaults to 10. Max of 50.</li></ul></li>
+</ul>
+
+<h5>Example Request</h5>
+<pre>
+<p><code>GET https://localhost:4567/api/v1/users/123/tweets?num=2</code></p>
+
+<p><code>javascript
+[ 
+  { 
+    "id": 1, 
+    "text": "foobar", 
+    "creator_id": 456,
+    "created": "jan-11-2015"
+  },
+  { 
+    "id": 2, 
+    "text": "foobar", 
+    "creator_id": 456,
+    "created": "jan-12-2015"
+  }
+]
+</code></p>
+</pre>
+</div>
+</div>
+
+<div ng-click="expand(restapi[7])">
+<h3>
+<b ng-show="!restapi[7].show">></b>
+<b ng-show="restapi[7].show">v</b>
+  {{restapi[7].content}}</h3>
+<div ng-show="restapi[7].show">
+
+
+<ul>
+<li>Description: Return all followers of a user.</li>
+<li>Resource URL: https://localhost:4567/api/v1/users/:user_id/followers</li>
+<li>Resource Information
+<ul><li>Response formats: JSON</li>
+<li>Requires authentication?: No</li></ul></li>
+<li>Parameters
+<ul><li>user_id (<em>required</em>): The user id of the specific user whose followers will be returned</li></ul></li>
+</ul>
+
+<h5>Example Request</h5>
+<pre>
+<p><code>GET https://localhost:4567/api/v1/users/123/followers</code></p>
+
+<p><code>javascript
+[
+  { 
+    "id": 124, 
+    "name": "Some Person"
+  },
+  { 
+    "id": 125, 
+    "name": "Other Person"
+  },
+]
+</code></p>
+</pre>
+</div>
+</div>
+
+
+
