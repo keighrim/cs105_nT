@@ -1,8 +1,8 @@
 require 'faker'
 
 module NanoTwitter
-  module Test
-    module Tweets
+  module Routes
+    module TweetsTest
 
       def self.registered(app)
 
@@ -25,6 +25,11 @@ module NanoTwitter
             "User with id #{user_id} has tweeted"
           end
         end
+
+        app.post '/user/testuser/tweet/:num' do |num|
+          redirect "test/tweets/#{num}"
+        end
+
       end
     end
   end

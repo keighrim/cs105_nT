@@ -1,6 +1,6 @@
 module NanoTwitter
-  module Test
-    module Status
+  module Routes
+    module StatusTestEnv
 
       def self.registered(app)
 
