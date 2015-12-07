@@ -23,7 +23,8 @@ register NanoTwitter::Test::FollowTest
 register NanoTwitter::Test::Status
 
 register NanoTwitter::Rest::V1::Tweets
-register NanoTwitter::Rest::V1::Users
+register NanoTwitter::Rest::V1::UsersGet
+register NanoTwitter::Rest::V1::UsersUpdate
 
 helpers NanoTwitter::Helpers::Errors
 helpers NanoTwitter::Helpers
