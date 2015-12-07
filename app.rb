@@ -6,7 +6,6 @@ require './config/environments' # database configuration
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/test/test*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/helpers/*.rb'].each {|file| require file }
-
 Dir[File.dirname(__FILE__) + '/api/v1/*.rb'].each {|file| require file }
 
 enable :sessions
@@ -25,8 +24,9 @@ register NanoTwitter::Test::Status
 register NanoTwitter::Rest::V1::Tweets
 register NanoTwitter::Rest::V1::Users
 
-helpers NanoTwitter::Helpers::Errors
 helpers NanoTwitter::Helpers
+helpers NanoTwitter::Helpers::Session
+helpers NanoTwitter::Helpers::Errors
 
 env_index = ARGV.index("-e")
 env_arg = ARGV[env_index + 1] if env_index
@@ -50,7 +50,6 @@ if env == 'test'
   log.debug 'fixture data created in test database...'
 end
 
-
 # For loader.io verification
 get '/loaderio-82d98309070f9f1c9315ff5dcd667982/' do
   'loaderio-82d98309070f9f1c9315ff5dcd667982'
@@ -73,14 +72,12 @@ post '/login' do
   password = params[:password]
   u = User.find_by(name: username, password: password)
   unauthorized_error if u.nil?
-  session[:logged_in_user_id] = u.id
-  session[:logged_in_user_name] = u.name
+  login(u)
   redirect '/'
 end
 
 get '/logout' do
-  session[:logged_in_user_id] = nil
-  session[:logged_in_user_name] = nil
+  logout
   redirect '/'
 end
 
@@ -90,18 +87,13 @@ end
 
 post '/register' do
   new_user = User.new(params)
-  if new_user.save
-    session[:logged_in_user_id] = new_user.id
-    session[:logged_in_user_name] = new_user.name
-    redirect '/'
-  else
-    internal_error
-  end
+  new_user.save ? login(new_user) : internal_error
+  redirect '/'
 end
 
 post '/tweet' do
   user = logged_in_user
-  @tweet = Tweet.make_tweet(user, params[:content], Time.now)
+  tweet(user, params[:content], Time.now)
   redirect back
 end
 
