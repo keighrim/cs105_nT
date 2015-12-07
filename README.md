@@ -3,6 +3,10 @@
 
 nanoTwitter is a toy-mimic of popular social service [twitter](www.twitter.com), developed by 4 students at Brandeis as a course project from *Software Engineering for scalability*.
 
+## Project Page
+[link](http://keighrim.github.io/cs105_nT/)
+
+
 ## License
 This is a free software under [MIT license](LICENSE)
 
