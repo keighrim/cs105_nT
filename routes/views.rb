@@ -8,14 +8,13 @@ module NanoTwitter
           redirect "/profile/#{logged_in_user.name}" unless logged_in_user.nil?
           get_global_timeline
           output = partial(:navbar)
-          # if $redis.exists("partial:top50")
-          #   output << $redis.get("partial:top50")
-          # else
-          #   tmp = partial( :timeline )
-          #   $redis.setex("partial:top50",65,tmp)
-          #   output << tmp
-          # end
-          output << partial( :timeline )
+          if $redis.exists("partial:top50")
+            output << $redis.get("partial:top50")
+          else
+            tmp = partial( :timeline )
+            $redis.setex("partial:top50",65,tmp)
+            output << tmp
+          end
           output
         end
 
@@ -38,14 +37,13 @@ module NanoTwitter
           else
             get_timeline(@user)
             output << partial( :profile )
-            # if $redis.exists("partial:#{user_name}")
-            #   output << $redis.get("partial:#{user_name}")
-            # else
-            #   tmp = partial( :timeline )
-            #   $redis.setex("partial:#{user_name}",65,tmp)
-            #   output << tmp
-            # end
-            output << partial( :timeline )
+            if $redis.exists("partial:#{user_name}")
+              output << $redis.get("partial:#{user_name}")
+            else
+              tmp = partial( :timeline )
+              $redis.setex("partial:#{user_name}",65,tmp)
+              output << tmp
+            end
           end
           output
         end
@@ -67,14 +65,13 @@ module NanoTwitter
           @tweets = Tweet.order("RANDOM()").take(50)
           @users = User.order("RANDOM()").take(20)
           output = partial( :navbar )
-           # if $redis.exists("partial:top50")
-          #   output << $redis.get("partial:top50")
-          # else
-          #   tmp = partial( :timeline )
-          #   $redis.setex("partial:top50",65,tmp)
-          #   output << tmp
-          # end
-          output << partial( :timeline )
+          if $redis.exists("partial:top50")
+            output << $redis.get("partial:top50")
+          else
+            tmp = partial( :timeline )
+            $redis.setex("partial:top50",65,tmp)
+            output << tmp
+          end
           output << partial( :suggested )
           output
         end
