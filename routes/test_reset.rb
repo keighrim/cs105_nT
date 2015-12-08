@@ -1,7 +1,7 @@
 
 module NanoTwitter
-  module Test
-    module Reset
+  module Routes
+    module ResetTestEnv
 
       def self.registered(app)
 
