@@ -6,7 +6,22 @@ This is a free software under [MIT license](LICENSE)
 
 ## Routing
 
-TODO
+* **`/`**: 
+    * Homepage with 50 latest tweets from all users.
+    * When the user is logged in, it redirects to his/her profile page (`/profile/:username`)
+* **`/timeline`**: 
+    * Redirects to the homepage (`/`)
+* **`/explorer`**:
+    * Follow suggestion page with randomly picked tweets and users
+* **`/profile`**:
+    * When the user is logged in, it redirects to his/her profile page (`profile/:username`). 
+    * If not, it does to the homepage (`/`)
+* **`/profile/:username`**: 
+    * By default, it will show the timeline of the target. (50 latest tweets from the target and those he/she follows)
+    * It has links to tweeting history and relations of the target.
+    * HIstory and relations pages can also be acceessed using `m` parameter in URL, `h` for history page, `n` for network page.
+
+
 
 ## REST API
  as of 10/22/2015
