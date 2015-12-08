@@ -23,7 +23,7 @@ module NanoTwitter
         $redis.get("partial:#{username}")
       else
         timeline_html = partial( :timeline )
-        $redis.setex("partial:#{username}",30,timeline_html)
+        $redis.setex("partial:#{username}",2,timeline_html)
         timeline_html
       end
     end
