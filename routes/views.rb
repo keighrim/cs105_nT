@@ -12,7 +12,7 @@ module NanoTwitter
             output << $redis.get("partial:top50")
           else
             tmp = partial( :timeline )
-            $redis.setex("partial:top50",10,tmp)
+            $redis.setex("partial:top50",30,tmp)
             output << tmp
           end
           output
@@ -41,7 +41,7 @@ module NanoTwitter
             else
               get_timeline(@user)
               tmp = partial( :timeline )
-              $redis.setex("partial:#{user_name}",10,tmp)
+              $redis.setex("partial:#{user_name}",30,tmp)
               output << tmp
             end
           end
@@ -69,7 +69,7 @@ module NanoTwitter
             output << $redis.get("partial:top50")
           else
             tmp = partial( :timeline )
-            $redis.setex("partial:top50",10,tmp)
+            $redis.setex("partial:top50",30,tmp)
             output << tmp
           end
           output << partial( :suggested )

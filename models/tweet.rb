@@ -31,7 +31,7 @@ class Tweet < ActiveRecord::Base
       'Sorry, no such user'
     end
   
-    tweet = Tweet.new(:user_id=>user.id, :user_name=>user.name, :content=>content, tweeted_at: tweeted_at)
+    tweet = Tweet.new(:user_id=>user.id, :user_name=>user.name, :content=>content, :tweeted_at=>tweeted_at)
 
     if tweet.save
       tweet
