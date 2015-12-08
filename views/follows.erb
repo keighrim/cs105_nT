@@ -1,23 +1,28 @@
-    <div class="row">
-        <div class="col-md-3 col-md-offset-2">
-            <% followers = @user.followers %>
-            <b>followers:</b>
-            <ul>
-                <% followers.each do |f| %>
-                <li><%="<a href=\"/profile/#{f.name}\"> #{f.name} </a>"%></br></li>
-                <% end %>
-            </ul>
-        </div>
-        <div class="col-md-3 col-md-offset-1">
+<div class="col-md-8 col-md-offset-1">
+    <table valign><tr>
+        <th><a href="/profile/<%= @user.name %>"><h3>Timeline</h3></a></th>
+        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        <th><a href="/profile/<%= @user.name %>?m=h"><h3>History</h3></a></th>
+        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        <th><h3>Network</h3></th>
+    </tr></table>
 
-
-            <% followed = @user.followed_users %>
-            <b>followed users:</b>
-            <ul>
-                <% followed.each do |f| %>
+    <div class="col-md-3 col-md-offset-1">
+        <% followers = @user.followers %>
+        <b>followers:</b>
+        <ul>
+            <% followers.each do |f| %>
                 <li><%="<a href=\"/profile/#{f.name}\"> #{f.name} </a>"%></br></li>
-                <% end %>
-            </ul>
-        </div>
+            <% end %>
+        </ul>
+    </div>
+    <div class="col-md-3 col-md-offset-1">
+        <% followed = @user.followed_users %>
+        <b>followed users:</b>
+        <ul>
+            <% followed.each do |f| %>
+                <li><%="<a href=\"/profile/#{f.name}\"> #{f.name} </a>"%></br></li>
+            <% end %>
+        </ul>
     </div>
 </div>
