@@ -17,15 +17,15 @@ module NanoTwitter
         end
 
         app.get '/profile' do
-          redirect "/profile/#{logged_in_user.name}"
+          redirect '/'
         end
 
         app.get '/profile/:user_name' do |user_name|
           @user = User.find_by(name: user_name)
           user_not_found_error(user_name) if @user.nil?
+          @following = is_following?
           output = partial( :navbar )
           output << partial( :info )
-          @following = is_following?
           if params['h'] == '1'
             get_history(@user)
             output << partial( :history )
