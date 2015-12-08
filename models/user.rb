@@ -24,7 +24,12 @@ class User < ActiveRecord::Base
     elsif self.id == other_user.id
       'Cannot follow yourself'
     else
-      self.followed_users << other_user
+      begin
+        self.followed_users << other_user
+      rescue ActiveRecord::RecordInvalid
+       # ignoring duplicate following
+      end
+
     end
   end
   
