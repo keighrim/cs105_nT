@@ -6,7 +6,7 @@ module NanoTwitter
 
         app.get '/' do
           redirect "/profile/#{logged_in_user.name}" unless logged_in_user.nil?
-          get_global_timeline
+          # get_global_timeline
           output = partial(:navbar)
           output << get_global_timeline_view
           output
@@ -32,9 +32,9 @@ module NanoTwitter
           elsif params['m'] == 'n'
             output << partial( :follows )
           else
-            get_timeline(@user)
             output << partial( :profile )
-            output << get_timeline_view(user_name)
+            # get_timeline(@user)
+            output << get_timeline_view(@user)
           end
           output
         end
