@@ -33,7 +33,7 @@ module NanoTwitter
             output << partial( :follows )
           else
             get_timeline(@user)
-            output << partial( :timeline )
+            output << partial( :profile )
             output << get_timeline_view(user_name)
           end
           output
