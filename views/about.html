@@ -1,7 +1,6 @@
-<h1>nanoTwitter</h1>
-
-<p><a href="https://codeship.com/projects/114521"><img src="https://img.shields.io/codeship/0e88ea30-695a-0133-4ddd-666650db048e.svg" alt="Codeship" title="" /></a> <a href="https://codeclimate.com/github/keighrim/cs105_nT"><img src="https://codeclimate.com/github/keighrim/cs105_nT/badges/gpa.svg" alt="Code Climate" title="" /></a>  <a href="https://raw.githubusercontent.com/keighrim/cs105_nT/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license" title="" /></a></p>
-
+<h1>nanoTwitter
+<a href="https://codeship.com/projects/114521"><img src="https://img.shields.io/codeship/0e88ea30-695a-0133-4ddd-666650db048e.svg" alt="Codeship" title="" /></a> <a href="https://codeclimate.com/github/keighrim/cs105_nT"><img src="https://codeclimate.com/github/keighrim/cs105_nT/badges/gpa.svg" alt="Code Climate" title="" /></a>  <a href="https://raw.githubusercontent.com/keighrim/cs105_nT/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license" title="" /></a>
+</h1>
 <p>nanoTwitter is a toy-mimic of popular social service <a href="http://www.twitter.com">twitter</a>, developed by 4 students at Brandeis as a course project from <em>Software Engineering for scalability</em>.</p>
 
 <h2>License</h2>
@@ -10,4 +9,35 @@
 
 <h2>Routing</h2>
 
-<p>TODO</p>
+<ul>
+    <li><strong>/</strong>:
+
+        <ul>
+            <li>Homepage with 50 latest tweets from all users.</li>
+            <li>When the user is logged in, it redirects to his/her profile page (/profile/:username)</li>
+        </ul></li>
+    <li><strong>/timeline</strong>:
+
+        <ul>
+            <li>Redirects to the homepage (/)</li>
+        </ul></li>
+    <li><strong>/explorer</strong>:
+
+        <ul>
+            <li>Follow suggestion page with randomly picked tweets and users</li>
+        </ul></li>
+    <li><strong>/profile</strong>:
+
+        <ul>
+            <li>When the user is logged in, it redirects to his/her profile page (profile/:username). </li>
+            <li>If not, it does to the homepage (/)</li>
+        </ul></li>
+    <li><strong>/profile/:username</strong>:
+
+        <ul>
+            <li>By default, it will show the timeline of the target. (50 latest tweets from the target and those he/she follows)</li>
+            <li>It has links to tweeting history and relations of the target.</li>
+            <li>HIstory and relations pages can also be acceessed using m parameter in URL, h for history page, n for network page.</li>
+        </ul></li>
+</ul>
+
