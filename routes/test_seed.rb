@@ -1,8 +1,8 @@
 require 'faker'
 
 module NanoTwitter
-  module Test
-    module Seed
+  module Routes
+    module SeedTest
 
       def self.registered(app)
 

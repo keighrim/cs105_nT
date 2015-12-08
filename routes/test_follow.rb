@@ -1,5 +1,5 @@
 module NanoTwitter
-  module Test
+  module Routes
     module FollowTest
 
       def self.registered(app)

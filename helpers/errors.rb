@@ -23,7 +23,7 @@ module NanoTwitter
       end
 
       def unauthorized_error
-        halt 401.1, 'Invalid login credentials'
+        halt 401, 'Invalid login credentials'
       end
 
       def not_allowed_error(action)
