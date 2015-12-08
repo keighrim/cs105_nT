@@ -1,11 +1,1 @@
-<div class="col-md-6 col-md-offset-2">
-    <h3> Random Tweets </h3>
-    <ul>
-        <% @tweets.each do |t|%>
-        <% op = t.user_name %>
-        <li><%=
-        "<a href=\"/profile/#{op}\"> #{op} </a> : #{t.content}"
-        %></li>
-        <% end %>
-    </ul>
-</div>
+<div class="col-md-6 col-md-offset-2"><h3> Random Tweets </h3><ul><% @tweets.each do |t|%><% op = t.user_name %><li><%="<a href=\"/profile/#{op}\"> #{op} </a> : #{t.content}"%></li><% end %></ul></div>

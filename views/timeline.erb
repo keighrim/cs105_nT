@@ -1,18 +1,1 @@
-<div class="col-md-8 col-md-offset-1">
-    <table valign><tr>
-        <th><h3>Timeline</h3> </th>
-        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-        <th><a href="/profile/<%= @user.name %>?m=h"><h3>History</h3></a> </th>
-        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-        <th><a href="/profile/<%= @user.name %>?m=n"><h3>Network</h3></a> </th>
-    </tr></table>
-    <ul>
-        <% @tweets.each do |t|%>
-            <% op = t.user_name %>
-            <li><%=
-                "<a href=\"/profile/#{op}\"> #{op} </a> : #{t.content}"
-            %></li>
-        <% end %>
-    </ul>
-    <
-</div>
+<div class="col-md-8 col-md-offset-1"><table valign><tr><th><h3>Timeline</h3> </th><th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th><a href="/profile/<%= @user.name %>?m=h"><h3>History</h3></a> </th><th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th><a href="/profile/<%= @user.name %>?m=n"><h3>Network</h3></a> </th></tr></table><ul><% @tweets.each do |t|%><% op = t.user_name %><li><%="<a href=\"/profile/#{op}\"> #{op} </a> : #{t.content}"%></li><% end %></ul></div>

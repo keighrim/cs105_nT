@@ -6,7 +6,7 @@ module NanoTwitter
 
         app.post '/tweet' do
           user = logged_in_user
-          tweet(user, params[:content], Time.now)
+          tweet(user, params[:content])
           redirect back
         end
 

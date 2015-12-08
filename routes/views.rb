@@ -8,7 +8,7 @@ module NanoTwitter
           redirect "/profile/#{logged_in_user.name}" unless logged_in_user.nil?
           get_global_timeline
           output = partial(:navbar)
-          output << partial( :timeline )
+          output << get_global_timeline_view
           output
         end
 
@@ -26,7 +26,6 @@ module NanoTwitter
           @following = is_following?
           output = partial( :navbar )
           output << partial( :info )
-          @following = is_following?
           if params['m'] == 'h'
             get_history(@user)
             output << partial( :history )
@@ -35,6 +34,7 @@ module NanoTwitter
           else
             get_timeline(@user)
             output << partial( :timeline )
+            output << get_timeline_view(user_name)
           end
           output
         end
@@ -47,13 +47,13 @@ module NanoTwitter
           @tweets = Tweet.order("RANDOM()").take(50)
           @users = User.order("RANDOM()").take(20)
           output = partial( :navbar )
-          output << partial( :timeline )
+          output << get_global_timeline_view
           output << partial( :suggested )
           output
         end
 
       end
-    end
+   end
   end
 end
 

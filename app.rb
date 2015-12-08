@@ -10,7 +10,6 @@ Dir[File.dirname(__FILE__) + '/helpers/*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/api/v1/*.rb'].each {|file| require file }
 
 enable :sessions
-
 log = Logger.new(STDOUT)
 log.level = Logger::DEBUG
 
