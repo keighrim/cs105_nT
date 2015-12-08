@@ -35,11 +35,11 @@ module NanoTwitter
             get_history(@user)
             output << partial( :history )
           else
-            get_timeline(@user)
             output << partial( :profile )
             if $redis.exists("partial:#{user_name}")
               output << $redis.get("partial:#{user_name}")
             else
+              get_timeline(@user)
               tmp = partial( :timeline )
               $redis.setex("partial:#{user_name}",65,tmp)
               output << tmp
