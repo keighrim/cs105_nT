@@ -5,7 +5,7 @@ module NanoTwitter
       def self.registered(app)
 
         app.get '/' do
-          redirect "/profile/#{logged_in_user.name}" unless logged_in_user.nil?
+          redirect "/profile/#{logged_in_user.name}" unless session[:logged_in_user_id].nil?
           # get_global_timeline
           output = partial(:navbar)
           output << get_global_timeline_view
