@@ -9,7 +9,11 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true, length: { minimum: 2 }
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-  
+
+  def self.accessible_attribs
+    %w(name email)
+  end
+
   def as_json(options = {})
     super(options.merge({ except: [:password] }))
   end
@@ -32,7 +36,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def timeline()
+  def build_timeline()
     if $redis.exists("timeline:user:#{self.id}")
       $redis.lrange("timeline:user:#{self.id}", 0, -1).map{|t| Tweet.new(JSON.parse(t))}
     else

@@ -15,7 +15,7 @@ module NanoTwitter
     end
 
     def get_timeline(user)
-      @tweets = user.timeline
+      @tweets = user.build_timeline
     end
 
     def get_global_timeline

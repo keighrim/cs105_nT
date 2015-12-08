@@ -20,7 +20,9 @@ module NanoTwitter
         end
 
         app.get '/register' do
-          erb :register
+          output = partial( :navbar )
+          output << partial( :register )
+          output
         end
 
         app.post '/register' do

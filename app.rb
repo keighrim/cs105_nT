@@ -2,6 +2,7 @@ require 'sinatra'
 require 'newrelic_rpm'
 require 'logger'
 require 'sinatra/activerecord'
+require 'sinatra/partial'
 require './config/environments' # database configuration
 Dir[File.dirname(__FILE__) + '/models/*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/routes/*.rb'].each {|file| require file }
@@ -15,16 +16,16 @@ log.level = Logger::DEBUG
 
 after {ActiveRecord::Base.connection.close}
 
-
 env_index = ARGV.index("-e")
 env_arg = ARGV[env_index + 1] if env_index
 env = env_arg || ENV["SINATRA_ENV"] || "development"
 
 # Some global configurations
 configure do
-  set :version, '0.5'
+  set :version, '1.0'
   set :app_name, 'Nano Twitter'
   set :authors, ['Allan Chesarone', 'Keigh Rim', 'Shu Chen', 'Vladimir Susaya']
+  set :partial_template_engine, :erb
 end
 
 if env == 'test'
@@ -50,9 +51,11 @@ register NanoTwitter::Routes::SeedTest
 register NanoTwitter::Routes::FollowTest
 
 register NanoTwitter::Rest::V1::Tweets
-register NanoTwitter::Rest::V1::Users
+register NanoTwitter::Rest::V1::UsersGet
+register NanoTwitter::Rest::V1::UsersUpdate
 
 helpers NanoTwitter::Helpers
 helpers NanoTwitter::Helpers::Session
 helpers NanoTwitter::Helpers::Errors
+
 

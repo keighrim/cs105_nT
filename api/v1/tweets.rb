@@ -17,7 +17,7 @@ module NanoTwitter
             parameter_error unless params['id']
             user = User.find_by_id(params['id'])
             text = URI::decode(params['text']) || '_'
-            Tweet.make_tweet(user, text, Time.now).to_json
+            tweet(user, text).to_json
           end
 
           app.get '/api/v1/tweets/recent' do
