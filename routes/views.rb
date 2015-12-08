@@ -8,11 +8,11 @@ module NanoTwitter
           redirect "/profile/#{logged_in_user.name}" unless logged_in_user.nil?
           get_global_timeline
           output = partial(:navbar)
-          if $redis.exists("partial:top50")
+          if $redis.ttl("partial:top50")>0
             output << $redis.get("partial:top50")
           else
             tmp = partial( :timeline )
-            $redis.setex("partial:top50",65,tmp)
+            $redis.setex("partial:top50",10,tmp)
             output << tmp
           end
           output
@@ -36,12 +36,12 @@ module NanoTwitter
             output << partial( :history )
           else
             output << partial( :profile )
-            if $redis.exists("partial:#{user_name}")
+            if $redis.ttl("partial:#{user_name}")>0
               output << $redis.get("partial:#{user_name}")
             else
               get_timeline(@user)
               tmp = partial( :timeline )
-              $redis.setex("partial:#{user_name}",65,tmp)
+              $redis.setex("partial:#{user_name}",10,tmp)
               output << tmp
             end
           end
@@ -65,11 +65,11 @@ module NanoTwitter
           @tweets = Tweet.order("RANDOM()").take(50)
           @users = User.order("RANDOM()").take(20)
           output = partial( :navbar )
-          if $redis.exists("partial:top50")
+          if $redis.ttl("partial:top50")>0
             output << $redis.get("partial:top50")
           else
             tmp = partial( :timeline )
-            $redis.setex("partial:top50",65,tmp)
+            $redis.setex("partial:top50",10,tmp)
             output << tmp
           end
           output << partial( :suggested )
