@@ -26,23 +26,15 @@ module NanoTwitter
           output = partial( :navbar )
           output << partial( :info )
           @following = is_following?
-          if params['h'] == '1'
+          if params['m'] == 'h'
             get_history(@user)
             output << partial( :history )
+          elsif params['m'] == 'n'
+            output << partial( :follows )
           else
             get_timeline(@user)
-            output << partial( :profile )
             output << partial( :timeline )
           end
-          output
-        end
-
-        app.get '/network/:user_name' do |user_name|
-          output = partial( :navbar )
-          @user = User.find_by(name: user_name)
-          user_not_found_error(user_name) if @user.nil?
-          output << partial( :info )
-          output << partial( :follows )
           output
         end
 
