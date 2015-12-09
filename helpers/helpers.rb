@@ -19,7 +19,7 @@ module NanoTwitter
     end
 
     def get_timeline_view(user)
-      if $redis.ttl("partial:#{user.name}")>0
+      if $redis.exists("partial:#{user.name}")
         $redis.get("partial:#{user.name}")
       else
         get_timeline(user)
@@ -35,12 +35,14 @@ module NanoTwitter
       else
         @tweets = Tweet.all.order(tweeted_at: :desc).take(50)
         @timeline = @tweets.map { |t| t.to_json }
-        $redis.rpush("timeline:recent:50", @timeline) if !@timeline.empty?
+        if !@timeline.empty?
+          $redis.rpush("timeline:recent:50", @timeline)
+        end
       end
     end
 
     def get_global_timeline_view
-      if $redis.ttl("partial:top50")>0
+      if $redis.exists("partial:top50")
         $redis.get("partial:top50")
       else
         get_global_timeline

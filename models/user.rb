@@ -54,6 +54,7 @@ class User < ActiveRecord::Base
       @tweets = @timeline.map{|t| t.to_json}
       if !@tweets.empty?
         $redis.rpush("timeline:user:#{self.id}", @tweets)
+        $redis.expire("timeline:user:#{self.id}", 30)
       end
       @timeline
     end
