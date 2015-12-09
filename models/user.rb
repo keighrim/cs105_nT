@@ -52,9 +52,7 @@ class User < ActiveRecord::Base
        'ORDER BY tweeted_at DESC')
       @timeline = @timeline[0,50]
       @tweets = @timeline.map{|t| t.to_json}
-      if !@tweets.empty?
-        $redis.rpush("timeline:user:#{self.id}", @tweets)
-      end
+      $redis.rpush("timeline:user:#{self.id}", @tweets) if !@tweets.empty?
       @timeline
     end
   end
