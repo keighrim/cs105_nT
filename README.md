@@ -5,14 +5,11 @@ nanoTwitter is a toy-mimic of popular social service [twitter](www.twitter.com),
 # Contents
 1. [License](#license)
 1. [Website](#website)
-1. [Details](#applicatoin-details)
+1. [Details](#application-details)
     - [Routings](#routings)
     - [Caching](#caching)
     - [Load Test](#load-test)
     - [REST API](#rest-api)
-
-## Project Page
-[link](http://keighrim.github.io/cs105_nT/)
 
 
 ## License
@@ -88,7 +85,7 @@ For three presets from the project specification, we also have three wrapping sc
 
 ##### Test case 1: u = 100, t = 500, f = 30
 
-1.  /  - user tries to simply load up the home page (non-logged in)
+*  /  - user tries to simply load up the home page (non-logged in)
 ```
     Run 1:
     0 - 250 clients over 1 min
@@ -120,9 +117,9 @@ For three presets from the project specification, we also have three wrapping sc
     2412 ms avg resp
     71.9 % err rate
     3311 Timeouts
-    ```
+```
 
-1.  /user/testuser - specifically load “testusers” home page
+*  /user/testuser - specifically load “testusers” home page
 ```
     Run 1:
     0 - 1000 clients over 1 min
@@ -142,9 +139,9 @@ For three presets from the project specification, we also have three wrapping sc
     4425 ms avg resp
     79.0 % err rate
     3485 Timeout
-    ```
+```
 
-1.  /user/testuser/tweet (POST) - have testuser create one tweet
+*  /user/testuser/tweet (POST) - have testuser create one tweet
 ```
     Run 1:
     2000 clients over 1 min
@@ -164,7 +161,7 @@ For three presets from the project specification, we also have three wrapping sc
     11311 ms avg resp
     54.4 % err rate
     1972 Timeout 
-    ```
+```
     
 ----
 ### REST API
