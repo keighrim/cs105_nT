@@ -1,0 +1,106 @@
+Test case 1: u = 100, t = 500, f = 30
+
+1.	/  - user tries to simply load up the home page (non-logged in)
+	Run 1:
+	0 - 500 clients over 1 min
+	4733 ms avg resp
+	0.0 % err rate
+	0 Timeouts
+
+	Run 2:
+	0 - 1000 clients over 1min
+	9602 ms avg resp
+	15.6 % err rate
+	379 Timouts
+
+	Run 3:
+	0 - 2000 clients over 1min
+	10286 ms avg resp
+	53.2 % err rate
+	1767 Timeouts
+
+2.	/user/testuser - specifically load “testusers” home page
+	Run 1:
+	0 - 500 clients over 1 min
+	6908 ms avg resp
+	0.0 % err rate
+	0 Timeouts
+	
+	Run 2:
+	0 - 1000 clients over 1 min
+	Crashed at 56 seconds, 940 clients
+	10517 ms avg resp
+	53.1 % err rate
+	Timeout	1121
+
+3.	/user/testuser/tweet (POST) - have testuser create one tweet
+	Run 1:
+	2000 clients over 1 min
+	10872 ms avg resp
+	29.5 % err rate
+	Timeout	442
+
+
+Test case 2: u = 500, t = 500, f = 100
+
+1.	/  - user tries to simply load up the home page (non-logged in)
+	Run 1:
+	0 - 500 clients over 1 min
+	5337 ms avg resp
+	0.0 % err rate
+	0 Timeouts
+	
+	Run 2:
+	0 - 1000 clients over 1min
+	9475 ms avg resp
+	1.6 % err rate
+	35 Timeouts
+
+	Run 3:
+	0 - 2000 clients over 1 min
+	Crash with 1639 Clients/s
+	10773 ms avg resp
+	51.8 % err rate
+	
+2.	/user/testuser - specifically load “testusers” home page
+	Run 1:
+	0 - 500 clients over 1 min
+	7310 ms avg resp
+	0.0 % err rate
+	0 Timeouts
+
+	Run 2:
+	0 - 1000 clients over 1 min
+	9846 ms avg resp
+	48.1 % err rate
+	Timeout	969
+
+3.	/user/testuser/tweet (POST) - have testuser create one tweet
+	Run 1:
+	2000 clients over 1 min
+	Crashed at 1200 Clients/s
+	8918 ms avg resp
+	66.5 % err rate
+	147 Timeouts
+
+Test case 3: u = 3000, t = 2000, f = 1000
+
+1.	/  - user tries to simply load up the home page (non-logged in)
+	Run 1:
+	0 - 500 clients over 1 min
+	4753 ms avg resp
+	0.0 % err rate
+	0 Timeouts
+
+	Run 2:
+	0 - 1000 clients over 1min
+	8627 ms avg resp
+	1.2 % err rate
+	Timeout	29
+
+
+
+	
+
+
+
