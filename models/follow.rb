@@ -11,6 +11,7 @@ class Follow < ActiveRecord::Base
 
   def rebuild_redis
     $redis.del("timeline:user:#{user.id}")
+    $redis.del("partial:#{user.id}")
     # user.timeline
   end
 
