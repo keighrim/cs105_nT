@@ -8,7 +8,39 @@ This is a free software under [MIT license](LICENSE)
 
 ## Routing
 
-TODO
+* **`/`**: 
+    * Homepage with 50 latest tweets from all users.
+    * When the user is logged in, it redirects to his/her profile page (`/profile/:username`)
+* **`/timeline`**: 
+    * Redirects to the homepage (`/`)
+* **`/explorer`**:
+    * Follow suggestion page with randomly picked tweets and users
+* **`/profile`**:
+    * When the user is logged in, it redirects to his/her profile page (`profile/:username`). 
+    * If not, it does to the homepage (`/`)
+* **`/profile/:username`**: 
+    * By default, it will show the timeline of the target. (50 latest tweets from the target and those he/she follows)
+    * It has links to tweeting history and relations of the target.
+    * HIstory and relations pages can also be acceessed using `m` parameter in URL, `h` for history page, `n` for network page.
+    
+## Caching
+
+Caching was handled using a redis instance hosted on the redis cloud service. This is linked through our Heroku instance.
+
+### Caching strategy
+
+#### A user's timeline:
+The query to generate a users timeline (the list of tweets of all of the users that this user follows, ordered by tweet time) is the most expensive operation, so we'd focused on tackle this problem to improve scalability.
+The first time that a user requests their timeline, very expensive SQL operation happens, Then this will be cached in the redis instance as a list of JSON objects representing each tweet object. 
+Future requests for the timeline will then get the list of tweets, stored as JSON, from redis. 
+Then we advanced to use two-tier caching, adding an outer layer to cache HTML strings, to make timeline generation even faster by reducing cost of translating JSON's and rendering HTML strings.
+Outer level, HTML cache, expires very soon (in a few seconds) because we thought having users looking at outdated cached web pages for a long period is a bad idea. 
+However, the deeper layer, JSON cache, stays a bit longer. And only when the instance in inner layer expires, the app performs SQL call again to get the most recent updates upon a user's request.
+In this way we can lazily generate timelines on user requests, not eagerly on every event of creating/deleting tweets.
+If one user follows or unfollows another user, the timeline is invalid, and must be rebuild. We invalidate redis caching by deleting the instance.
+
+#### Home timeline(50 most recent tweets):
+The home timeline, or the list of the 50 most recent tweets shown on the homepage of a non-logged in user, is stored in redis with the same two-tier strategy as individual timeline. 
 
 ## REST API
  as of 11/22/2015

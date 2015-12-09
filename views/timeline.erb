@@ -1,1 +1,1 @@
-<div class="col-md-8 col-md-offset-1"><h3>Timeline</h3><ul><% @tweets.each do |t|%><% op = t.user_name %><li><%= "<a href=\"/profile/#{op}\"> #{op} </a> : #{t.content}"%></li><% end %></ul></div>
+<div class="col-md-8 col-md-offset-1"><h3> Timeline</h3><ul><% @tweets.each do |t|%><% op = t.user_name %><li><%="<a href=\"/profile/#{op}\"> #{op} </a> : #{t.content}"%></li><% end %></ul></div>

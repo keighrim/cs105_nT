@@ -24,7 +24,12 @@ class User < ActiveRecord::Base
     elsif self.id == other_user.id
       'Cannot follow yourself'
     else
-      self.followed_users << other_user
+      begin
+        self.followed_users << other_user
+      rescue ActiveRecord::RecordInvalid
+       # ignoring duplicate following
+      end
+
     end
   end
   
@@ -37,7 +42,7 @@ class User < ActiveRecord::Base
   end
 
   def build_timeline()
-    if $redis.exists("timeline:user:#{self.id}")
+    if $redis.ttl("timeline:user:#{self.id}")>0
       $redis.lrange("timeline:user:#{self.id}", 0, -1).map{|t| Tweet.new(JSON.parse(t))}
     else
       @timeline = Tweet.find_by_sql('SELECT DISTINCT T.* '\
@@ -48,7 +53,7 @@ class User < ActiveRecord::Base
       @timeline = @timeline[0,50]
       @tweets = @timeline.map{|t| t.to_json}
       if !@tweets.empty?
-        $redis.rpush("timeline:user:#{self.id}", @tweets)
+        $redis.setex("timeline:user:#{self.id}", 30, @tweets)
       end
       @timeline
     end

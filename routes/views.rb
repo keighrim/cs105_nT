@@ -5,16 +5,10 @@ module NanoTwitter
       def self.registered(app)
 
         app.get '/' do
-          redirect "/profile/#{logged_in_user.name}" unless logged_in_user.nil?
-          get_global_timeline
+          redirect "/profile/#{logged_in_user.name}" unless session[:logged_in_user_id].nil?
+          # get_global_timeline
           output = partial(:navbar)
-          if $redis.exists("partial:top50")
-            output << $redis.get("partial:top50")
-          else
-            tmp = partial( :timeline )
-            $redis.setex("partial:top50",65,tmp)
-            output << tmp
-          end
+          output << get_global_timeline_view
           output
         end
 
@@ -23,37 +17,25 @@ module NanoTwitter
         end
 
         app.get '/profile' do
-          redirect "/profile/#{logged_in_user.name}"
+          redirect '/'
         end
 
         app.get '/profile/:user_name' do |user_name|
           @user = User.find_by(name: user_name)
           user_not_found_error(user_name) if @user.nil?
+          @following = is_following?
           output = partial( :navbar )
           output << partial( :info )
-          if params['h'] == '1'
+          if params['m'] == 'h'
             get_history(@user)
             output << partial( :history )
+          elsif params['m'] == 'n'
+            output << partial( :follows )
           else
-            get_timeline(@user)
             output << partial( :profile )
-            if $redis.exists("partial:#{user_name}")
-              output << $redis.get("partial:#{user_name}")
-            else
-              tmp = partial( :timeline )
-              $redis.setex("partial:#{user_name}",65,tmp)
-              output << tmp
-            end
+            # get_timeline(@user)
+            output << get_timeline_view(@user)
           end
-          output
-        end
-
-        app.get '/network/:user_name' do |user_name|
-          output = partial( :navbar )
-          @user = User.find_by(name: user_name)
-          user_not_found_error(user_name) if @user.nil?
-          output << partial( :info )
-          output << partial( :follows )
           output
         end
 
@@ -65,19 +47,13 @@ module NanoTwitter
           @tweets = Tweet.order("RANDOM()").take(50)
           @users = User.order("RANDOM()").take(20)
           output = partial( :navbar )
-          if $redis.exists("partial:top50")
-            output << $redis.get("partial:top50")
-          else
-            tmp = partial( :timeline )
-            $redis.setex("partial:top50",65,tmp)
-            output << tmp
-          end
+          output << get_global_timeline_view
           output << partial( :suggested )
           output
         end
 
       end
-    end
+   end
   end
 end
 

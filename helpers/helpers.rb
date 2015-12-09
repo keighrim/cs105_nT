@@ -18,15 +18,41 @@ module NanoTwitter
       @tweets = user.build_timeline
     end
 
+    def get_timeline_view(user)
+      if $redis.ttl("partial:#{user.name}")>0
+        $redis.get("partial:#{user.name}")
+      else
+        get_timeline(user)
+        timeline_html = partial( :timeline )
+        $redis.setex("partial:#{user.name}",3,timeline_html)
+        timeline_html
+      end
+    end
+
     def get_global_timeline
-      if $redis.exists("timeline:recent:50")
+      if $redis.ttl("timeline:recent:50")>0
         @tweets = $redis.lrange("timeline:recent:50", 0, -1).map { |t| Tweet.new(JSON.parse(t)) }
       else
         @tweets = Tweet.all.order(tweeted_at: :desc).take(50)
         @timeline = @tweets.map { |t| t.to_json }
-        $redis.rpush("timeline:recent:50", @timeline) if !@timeline.empty?
+        $redis.setex("timeline:recent:50", 30, @timeline) if !@timeline.empty?
       end
     end
+
+    def get_global_timeline_view
+      if $redis.ttl("partial:top50")>0
+        $redis.get("partial:top50")
+      else
+        get_global_timeline
+        timeline_html = partial( :timeline )
+        $redis.setex("partial:top50",3,timeline_html)
+        timeline_html
+      end
+    end
+
+    # def get_global_timeline_view
+    #   get_timeline_view("top50")
+    # end
 
     def is_following?
       !logged_in_user.nil? && logged_in_user.followed_users.include?(@user)
