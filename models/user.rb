@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
   end
 
   def build_timeline()
-    if $redis.ttl("timeline:user:#{self.id}")>0
+    if $redis.exists("timeline:user:#{self.id}")
       $redis.lrange("timeline:user:#{self.id}", 0, -1).map{|t| Tweet.new(JSON.parse(t))}
     else
       @timeline = Tweet.find_by_sql('SELECT DISTINCT T.* '\
