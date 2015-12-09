@@ -52,10 +52,6 @@ module NanoTwitter
       end
     end
 
-    # def get_global_timeline_view
-    #   get_timeline_view("top50")
-    # end
-
     def is_following?
       !logged_in_user.nil? && logged_in_user.followed_users.include?(@user)
     end
