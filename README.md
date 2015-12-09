@@ -1,15 +1,16 @@
-# nanoTwitter [![Codeship](https://img.shields.io/codeship/0e88ea30-695a-0133-4ddd-666650db048e.svg)](https://codeship.com/projects/114521) [![Code Climate](https://codeclimate.com/github/keighrim/cs105_nT/badges/gpa.svg)](https://codeclimate.com/github/keighrim/cs105_nT)  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/keighrim/cs105_nT/master/LICENSE)
+# nanoTwitter [![Codeship](https://img.shields.io/codeship/0e88ea30-695a-0133-4ddd-666650db048e.svg)](https://codeship.com/projects/114521)  [![Code Climate](https://codeclimate.com/github/keighrim/cs105_nT/badges/gpa.svg)](https://codeclimate.com/github/keighrim/cs105_nT)  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/keighrim/cs105_nT/master/LICENSE)  [![Latest tag](https://img.shields.io/github/tag/keighrim/cs105_nt.svg)](https://github.com/keighrim/cs105_nT/tags) [![Open issues](https://img.shields.io/github/issues/keighrim/cs105_nt.svg)](https://github.com/keighrim/cs105_nT/issues?utf8=%E2%9C%93&q=)
 
-nanoTwitter is a toy-mimic of popular social service [twitter](www.twitter.com), developed by [4 students](http://keighrim.github.io/cs105_nT/#/team) at Brandeis as a course project from *Software Engineering for scalability*.
+**nanoTwitter** is a toy-mimic of the popular social service [twitter](www.twitter.com), developed by [4 students](http://keighrim.github.io/cs105_nT/#/team) at Brandeis University as a course project from *Software Engineering for Scalability*.
 
 # Contents
 1. [License](#license)
 1. [Website](#website)
-1. [Details](#applicatoin-details)
+1. [Details](#application-details)
     - [Routings](#routings)
     - [Caching](#caching)
     - [Load Test](#load-test)
     - [REST API](#rest-api)
+
 
 ## License
 This is a free software under [MIT license](LICENSE)
@@ -17,22 +18,20 @@ This is a free software under [MIT license](LICENSE)
 ## Website
 Project website is accessible here: [http://keighrim.github.io/cs105_nT/](http://keighrim.github.io/cs105_nT/)
 
-
-
-## Application details
+## Technical details
 ----
 ### Routings
 
 * **`/`**: 
     * Homepage with 50 latest tweets from all users.
-    * When the user is logged in, it redirects to his/her profile page (`/profile/:username`)
+    * When the user is logged in, it redirects to his/her own profile page. (`/profile/:username`)
 * **`/timeline`**: 
-    * Redirects to the homepage (`/`)
+    * Redirects to the homepage. (`/`)
 * **`/explorer`**:
-    * Follow suggestion page with randomly picked tweets and users
+    * Follow suggestion page with randomly picked users and the most recent tweets.
 * **`/profile`**:
-    * When the user is logged in, it redirects to his/her profile page (`profile/:username`). 
-    * If not, it does to the homepage (`/`)
+    * When the user is logged in, it redirects to his/her profile page. (`profile/:username`). 
+    * If not, it does to the homepage. (`/`)
 * **`/profile/:username`**: 
     * By default, it will show the timeline of the target. (50 latest tweets from the target and those he/she follows)
     * It has links to tweeting history and relations of the target.
@@ -51,12 +50,12 @@ The first time that a user requests their timeline, very expensive SQL operation
 Future requests for the timeline will then get the list of tweets, stored as JSON, from redis. 
 Then we advanced to use two-tier caching, adding an outer layer to cache HTML strings, to make timeline generation even faster by reducing cost of translating JSON's and rendering HTML strings.
 Outer level, HTML cache, expires very soon (in a few seconds) because we thought having users looking at outdated cached web pages for a long period is a bad idea. 
-However, the deeper layer, JSON cache, stays a bit longer. And only when the instance in inner layer expires, the app performs SQL call again to get the most recent updates upon a user's request.
-In this way we can lazily generate timelines on user requests, not eagerly on every event of creating/deleting tweets.
-If one user follows or unfollows another user, the timeline is invalid, and must be rebuild. We invalidate redis caching by deleting the instance.
+However, the deeper layer, JSON cache, stays longer (30 seconds). And only when the instance in inner layer expires, the app performs SQL call to get the most recent updates upon a user's request.
+In this way we can *lazily* generate timelines on user requests, *not eagerly* on every event of creating/deleting tweets.
+If one user follows or unfollows another user, the timeline is invalid, and must be rebuild. We invalidate redis caching by deleting relevant instances.
 
 ##### Home timeline(50 most recent tweets):
-The home timeline, or the list of the 50 most recent tweets shown on the homepage of a non-logged in user, is stored in redis with the same two-tier strategy as individual timeline. 
+The home timeline, or the list of the 50 most recent tweets shown on the homepage of a non-logged in user, is stored in redis with the same two-tier strategy as individual timelines. 
 
 ----
 ### Load test
@@ -84,7 +83,7 @@ For three presets from the project specification, we also have three wrapping sc
 
 ##### Test case 1: u = 100, t = 500, f = 30
 
-1.  /  - user tries to simply load up the home page (non-logged in)
+*  /  - user tries to simply load up the home page (non-logged in)
 ```
     Run 1:
     0 - 250 clients over 1 min
@@ -116,9 +115,9 @@ For three presets from the project specification, we also have three wrapping sc
     2412 ms avg resp
     71.9 % err rate
     3311 Timeouts
-    ```
+```
 
-1.  /user/testuser - specifically load “testusers” home page
+*  /user/testuser - specifically load “testusers” home page
 ```
     Run 1:
     0 - 1000 clients over 1 min
@@ -138,9 +137,9 @@ For three presets from the project specification, we also have three wrapping sc
     4425 ms avg resp
     79.0 % err rate
     3485 Timeout
-    ```
+```
 
-1.  /user/testuser/tweet (POST) - have testuser create one tweet
+*  /user/testuser/tweet (POST) - have testuser create one tweet
 ```
     Run 1:
     2000 clients over 1 min
@@ -160,7 +159,7 @@ For three presets from the project specification, we also have three wrapping sc
     11311 ms avg resp
     54.4 % err rate
     1972 Timeout 
-    ```
+```
     
 ----
 ### REST API
