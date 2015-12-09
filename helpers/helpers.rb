@@ -35,7 +35,10 @@ module NanoTwitter
       else
         @tweets = Tweet.all.order(tweeted_at: :desc).take(50)
         @timeline = @tweets.map { |t| t.to_json }
-        $redis.setex("timeline:recent:50", 30, @timeline) if !@timeline.empty?
+        if !@timeline.empty?
+          $redis.rpush("timeline:recent:50", @timeline)
+          $redis.expire("timeline:recent:50",30)
+        end
       end
     end
 
