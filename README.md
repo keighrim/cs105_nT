@@ -4,7 +4,7 @@
 
 # Contents
 1. [License](#license)
-1. [Website](#website)
+1. [Websites](#websites)
 1. [Details](#technical-details)
     - [Routings](#routings)
     - [Caching](#caching)
@@ -15,8 +15,10 @@
 ## License
 This is a free software under [MIT license](LICENSE)
 
-## Website
+## Websites
 Project website is accessible here: [http://keighrim.github.io/cs105_nT/](http://keighrim.github.io/cs105_nT/)
+
+Running instance of nanoTwitter is on Heroku: [https://afternoon-peak-6349.herokuapp.com/](https://afternoon-peak-6349.herokuapp.com/)
 
 ## Technical details
 ----
