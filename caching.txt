@@ -1,9 +1,0 @@
-Caching was handled using a redis instance hosted on the redis cloud service. This is linked through our Heroku instance.
-
-Places where we cached:
-
-  A users timeline:
-    The query to generate a users timeline(the list of tweets of all of the users that this user follows, ordered by tweet time) is expensive. The first time that a user requests thier timeline, this will be cached in the redis instance as a list of json objects represnting each tweet object. Future requests for the timeline will then get the list of tweets, stored as json, from redis. If one of their followers tweets, this tweet is added to the front of the list in redis. If this user follows or unfollows another user, the timeline is invalid, and must be rebuild. This is done at the time of follow/unfollow, so when the user returns to thier timeline, redis has already been populated with the new timeline.
-
-  Home timeline(50 most recent tweets):
-    The home timeline, or the list of the 50 most recent tweets shown on the homepage of a non-logged in user, is stored in redis as a list of json objects representing each tweet, of length 50. Every time any user tweets, that tweet is added to the front of the list in redis, and the list is trimmed to 50 entries.
