@@ -5,7 +5,7 @@
 # Contents
 1. [License](#license)
 1. [Website](#website)
-1. [Details](#application-details)
+1. [Details](#technical-details)
     - [Routings](#routings)
     - [Caching](#caching)
     - [Load Test](#load-test)
@@ -72,12 +72,12 @@ To set up load test scenarios, we provide a series of `/test` routes.
 Also, for batch setup we have shell scripts in `scripts` directory in the project. 
 
 ```bash
-$ scripts/loadtest_evn.sh
+$ ./scripts/loadtest_evn.sh
 usage: loadtest_env.sh <#users> <#tweets> <#followers> (optional) <base-url>
 e.g.: loadtest_env.sh 100 500 30 http://localhost:4567
 ```
 
-For three presets from the project specification, we also have three wrapping scripts, `loadtest_evn1.sh`(100 500 30), `loadtest_evn3.sh`(500 500 100), `loadtest_evn3.sh`(3000 2000 1000)
+For sake of convenience, we also have three wrapping scripts for three presets from the project specification: `loadtest_evn1.sh`(100 500 30), `loadtest_evn3.sh`(500 500 100), `loadtest_evn3.sh`(3000 2000 1000).
 
 #### Test results
 
