@@ -5,11 +5,12 @@ nanoTwitter is a toy-mimic of popular social service [twitter](www.twitter.com),
 # Contents
 1. [License](#license)
 1. [Website](#website)
-1. [Details](#applicatoin-details)
+1. [Details](#application-details)
     - [Routings](#routings)
     - [Caching](#caching)
     - [Load Test](#load-test)
     - [REST API](#rest-api)
+
 
 ## License
 This is a free software under [MIT license](LICENSE)
@@ -84,7 +85,7 @@ For three presets from the project specification, we also have three wrapping sc
 
 ##### Test case 1: u = 100, t = 500, f = 30
 
-1.  /  - user tries to simply load up the home page (non-logged in)
+*  /  - user tries to simply load up the home page (non-logged in)
 ```
     Run 1:
     0 - 250 clients over 1 min
@@ -116,9 +117,9 @@ For three presets from the project specification, we also have three wrapping sc
     2412 ms avg resp
     71.9 % err rate
     3311 Timeouts
-    ```
+```
 
-1.  /user/testuser - specifically load “testusers” home page
+*  /user/testuser - specifically load “testusers” home page
 ```
     Run 1:
     0 - 1000 clients over 1 min
@@ -138,9 +139,9 @@ For three presets from the project specification, we also have three wrapping sc
     4425 ms avg resp
     79.0 % err rate
     3485 Timeout
-    ```
+```
 
-1.  /user/testuser/tweet (POST) - have testuser create one tweet
+*  /user/testuser/tweet (POST) - have testuser create one tweet
 ```
     Run 1:
     2000 clients over 1 min
@@ -160,7 +161,7 @@ For three presets from the project specification, we also have three wrapping sc
     11311 ms avg resp
     54.4 % err rate
     1972 Timeout 
-    ```
+```
     
 ----
 ### REST API
@@ -194,11 +195,11 @@ For three presets from the project specification, we also have three wrapping sc
 * Description: Creates a new tweet and returns it.
 * Resource URL: https://localhost:4567/api/v1/tweets?user_id
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* user_id (*required*): The user id to be designated as the creator of the tweet.
-	* text (*optional*): The text of the tweet. Defaults to random Faker string.
+    * user_id (*required*): The user id to be designated as the creator of the tweet.
+    * text (*optional*): The text of the tweet. Defaults to random Faker string.
 
 ##### Example Request
 
@@ -218,10 +219,10 @@ For three presets from the project specification, we also have three wrapping sc
 * Description: Retrieve *n* latest tweets from all users.
 * Resource URL: https://localhost:4567/api/v1/tweets/recent
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* num (*optional*): Returns num recent tweets. Defaults to 10. Max of 50.
+    * num (*optional*): Returns num recent tweets. Defaults to 10. Max of 50.
 
 ##### Example Request
 
@@ -249,10 +250,10 @@ For three presets from the project specification, we also have three wrapping sc
 * Description: Returns information of a user based on a ID.
 * Resource URL: https://localhost:4567/api/v1/users?id
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* id (*required*): The user id of the user whose information is to be returned.
+    * id (*required*): The user id of the user whose information is to be returned.
 
 ##### Example Request
 
@@ -270,10 +271,10 @@ For three presets from the project specification, we also have three wrapping sc
 * Description: Creates a new account and returns it.
 * Resource URL: https://localhost:4567/api/v1/users?name
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* name (*required*): The name of the user to create.
+    * name (*required*): The name of the user to create.
     * email (*required*): The e-mail address of the user to create.
 
 ##### Example Request
@@ -293,11 +294,11 @@ For three presets from the project specification, we also have three wrapping sc
 * Description: Updates user information and returns it. Changing password using this is not allowed.
 * Resource URL: https://localhost:4567/api/v1/users?id
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* id (*required*): The id of the user to update.
-	* name (*optional*): The new name of the user.
+    * id (*required*): The id of the user to update.
+    * name (*optional*): The new name of the user.
   * email (*optional*): The new email address of the user.
 
 ##### Example Request
@@ -318,11 +319,11 @@ For three presets from the project specification, we also have three wrapping sc
 * Description: Retrieve *n* latest tweets from a specifin user.
 * Resource URL: https://localhost:4567/api/v1/users/:user_id/tweets
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* user_id (*required*): The user id of the specific user whose tweets will be returned
-	* num (*optional*): The number of recent tweets for this user to return. Defaults to 10. Max of 50.
+    * user_id (*required*): The user id of the specific user whose tweets will be returned
+    * num (*optional*): The number of recent tweets for this user to return. Defaults to 10. Max of 50.
 
 ##### Example Request
 
@@ -350,10 +351,10 @@ For three presets from the project specification, we also have three wrapping sc
 * Description: Return all followers of a user.
 * Resource URL: https://localhost:4567/api/v1/users/:user_id/followers
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* user_id (*required*): The user id of the specific user whose followers will be returned
+    * user_id (*required*): The user id of the specific user whose followers will be returned
 
 ##### Example Request
 
