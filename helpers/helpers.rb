@@ -19,8 +19,9 @@ module NanoTwitter
     end
 
     def get_timeline_view(user)
-      if $redis.exists("partial:#{user.name}")
-        $redis.get("partial:#{user.name}")
+      cached = $redis.get("partial:#{user.name}")
+      if !cached.nil?
+        cached
       else
         get_timeline(user)
         timeline_html = partial( :timeline )
@@ -42,8 +43,9 @@ module NanoTwitter
     end
 
     def get_global_timeline_view
-      if $redis.exists("partial:top50")
-        $redis.get("partial:top50")
+      cached = $redis.get("partial:top50")
+      if !cached.nil?
+        cached
       else
         get_global_timeline
         timeline_html = partial( :timeline )
