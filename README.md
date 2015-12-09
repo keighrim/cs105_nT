@@ -82,8 +82,86 @@ For three presets from the project specification, we also have three wrapping sc
 
 #### Test results
 
+##### Test case 1: u = 100, t = 500, f = 30
 
+1.  /  - user tries to simply load up the home page (non-logged in)
+```
+    Run 1:
+    0 - 250 clients over 1 min
+    1070 ms avg resp
+    0.0 % err rate
+    0 Timeouts
 
+    Run 2:
+    0 - 500 clients over 1min
+    1690 ms avg resp
+    0.2 % err rate
+    0 Timouts
+
+    Run 3:
+    0 - 1000 clients over 1min
+    2291 ms avg resp
+    0.1 % err rate
+    0 Timeouts
+
+    Run 4:
+    0 - 2000 clients over 1min
+    4337 ms avg resp
+    0.1 % err rate
+    0 Timeouts
+
+    Run 5:
+    0 - 4000 clients over 1min
+    Crashed at 00:54 with 3604 clients
+    2412 ms avg resp
+    71.9 % err rate
+    3311 Timeouts
+    ```
+
+1.  /user/testuser - specifically load “testusers” home page
+```
+    Run 1:
+    0 - 1000 clients over 1 min
+    6908 ms avg resp
+    0.0 % err rate
+    0 Timeouts
+    
+    Run 2:
+    0 - 2000 clients over 1 min
+    6970 ms avg resp
+    0.0 % err rate
+    0 Timeout
+
+    Run 3:
+    0 - 4000 clients over 1 min
+    Crashed at 00:54 with 3604 clients
+    4425 ms avg resp
+    79.0 % err rate
+    3485 Timeout
+    ```
+
+1.  /user/testuser/tweet (POST) - have testuser create one tweet
+```
+    Run 1:
+    2000 clients over 1 min
+    236 ms avg resp
+    0.0 % err rate
+    0 Timeout 
+
+    Run 2:
+    4000 clients over 1 min
+    1316 ms avg resp
+    0.0 % err rate
+    0 Timeout 
+
+    Run 3:
+    8000 clients over 1 min
+    Crashed at 00:38
+    11311 ms avg resp
+    54.4 % err rate
+    1972 Timeout 
+    ```
+    
 ----
 ### REST API
  as of 11/22/2015
