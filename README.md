@@ -1,12 +1,27 @@
-# nanoTwitter
-[![Codeship](https://img.shields.io/codeship/0e88ea30-695a-0133-4ddd-666650db048e.svg)](https://codeship.com/projects/114521) [![Code Climate](https://codeclimate.com/github/keighrim/cs105_nT/badges/gpa.svg)](https://codeclimate.com/github/keighrim/cs105_nT)  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/keighrim/cs105_nT/master/LICENSE)
+# nanoTwitter [![Codeship](https://img.shields.io/codeship/0e88ea30-695a-0133-4ddd-666650db048e.svg)](https://codeship.com/projects/114521) [![Code Climate](https://codeclimate.com/github/keighrim/cs105_nT/badges/gpa.svg)](https://codeclimate.com/github/keighrim/cs105_nT)  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/keighrim/cs105_nT/master/LICENSE)
 
-nanoTwitter is a toy-mimic of popular social service [twitter](www.twitter.com), developed by 4 students at Brandeis as a course project from *Software Engineering for scalability*.
+nanoTwitter is a toy-mimic of popular social service [twitter](www.twitter.com), developed by [4 students](http://keighrim.github.io/cs105_nT/#/team) at Brandeis as a course project from *Software Engineering for scalability*.
+
+# Contents
+1. [License](#license)
+1. [Website](#website)
+1. [Details](#applicatoin-details)
+    - [Routings](#routings)
+    - [Caching](#caching)
+    - [Load Test](#load-test)
+    - [REST API](#rest-api)
 
 ## License
 This is a free software under [MIT license](LICENSE)
 
-## Routing
+## Website
+Project website is accessible here: [http://keighrim.github.io/cs105_nT/](http://keighrim.github.io/cs105_nT/)
+
+
+
+## Application details
+----
+### Routings
 
 * **`/`**: 
     * Homepage with 50 latest tweets from all users.
@@ -22,14 +37,15 @@ This is a free software under [MIT license](LICENSE)
     * By default, it will show the timeline of the target. (50 latest tweets from the target and those he/she follows)
     * It has links to tweeting history and relations of the target.
     * HIstory and relations pages can also be acceessed using `m` parameter in URL, `h` for history page, `n` for network page.
-    
-## Caching
+
+----    
+### Caching
 
 Caching was handled using a redis instance hosted on the redis cloud service. This is linked through our Heroku instance.
 
-### Caching strategy
+#### Caching strategy
 
-#### A user's timeline:
+##### A user's timeline:
 The query to generate a users timeline (the list of tweets of all of the users that this user follows, ordered by tweet time) is the most expensive operation, so we'd focused on tackle this problem to improve scalability.
 The first time that a user requests their timeline, very expensive SQL operation happens, Then this will be cached in the redis instance as a list of JSON objects representing each tweet object. 
 Future requests for the timeline will then get the list of tweets, stored as JSON, from redis. 
@@ -39,13 +55,40 @@ However, the deeper layer, JSON cache, stays a bit longer. And only when the ins
 In this way we can lazily generate timelines on user requests, not eagerly on every event of creating/deleting tweets.
 If one user follows or unfollows another user, the timeline is invalid, and must be rebuild. We invalidate redis caching by deleting the instance.
 
-#### Home timeline(50 most recent tweets):
+##### Home timeline(50 most recent tweets):
 The home timeline, or the list of the 50 most recent tweets shown on the homepage of a non-logged in user, is stored in redis with the same two-tier strategy as individual timeline. 
 
-## REST API
+----
+### Load test
+
+#### Test scenarios 
+To set up load test scenarios, we provide a series of `/test` routes.
+
+* `/test/reset/all` - Delete everything and recreate testuser
+* `/test/status` - See the current state of server
+* `/test/seed/_u_` - create “u” new users
+* `/test/tweets/_t_` - have testuser tweet “t” times
+* `/test/follow/_f_` - have f users follow testuser
+
+Also, for batch setup we have shell scripts in `scripts` directory in the project. 
+
+```bash
+$ scripts/loadtest_evn.sh
+usage: loadtest_env.sh <#users> <#tweets> <#followers> (optional) <base-url>
+e.g.: loadtest_env.sh 100 500 30 http://localhost:4567
+```
+
+For three presets from the project specification, we also have three wrapping scripts, `loadtest_evn1.sh`(100 500 30), `loadtest_evn3.sh`(500 500 100), `loadtest_evn3.sh`(3000 2000 1000)
+
+#### Test results
+
+
+
+----
+### REST API
  as of 11/22/2015
 
-### GET /tweets?:tweet_id
+#### GET /tweets?:tweet_id
 
 * Description: Returns a tweet based on its ID.
 * Resource URL: https://localhost:4567/api/v1/tweets?id
@@ -68,16 +111,16 @@ The home timeline, or the list of the 50 most recent tweets shown on the homepag
   "created": "jan-11-2015"
 }
 ```
-### POST /tweets?:user_id
+#### POST /tweets?:user_id
 
 * Description: Creates a new tweet and returns it.
 * Resource URL: https://localhost:4567/api/v1/tweets?user_id
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* user_id (*required*): The user id to be designated as the creator of the tweet.
-	* text (*optional*): The text of the tweet. Defaults to random Faker string.
+    * user_id (*required*): The user id to be designated as the creator of the tweet.
+    * text (*optional*): The text of the tweet. Defaults to random Faker string.
 
 ##### Example Request
 
@@ -92,15 +135,15 @@ The home timeline, or the list of the 50 most recent tweets shown on the homepag
 }
 ```
 
-### GET /tweets/recent
+#### GET /tweets/recent
 
 * Description: Retrieve *n* latest tweets from all users.
 * Resource URL: https://localhost:4567/api/v1/tweets/recent
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* num (*optional*): Returns num recent tweets. Defaults to 10. Max of 50.
+    * num (*optional*): Returns num recent tweets. Defaults to 10. Max of 50.
 
 ##### Example Request
 
@@ -123,15 +166,15 @@ The home timeline, or the list of the 50 most recent tweets shown on the homepag
 ]
 ```
 
-### GET /users?:user_id
+#### GET /users?:user_id
 
 * Description: Returns information of a user based on a ID.
 * Resource URL: https://localhost:4567/api/v1/users?id
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* id (*required*): The user id of the user whose information is to be returned.
+    * id (*required*): The user id of the user whose information is to be returned.
 
 ##### Example Request
 
@@ -144,15 +187,15 @@ The home timeline, or the list of the 50 most recent tweets shown on the homepag
 }
 ```
 
-### POST /users?:name&:email
+#### POST /users?:name&:email
 
 * Description: Creates a new account and returns it.
 * Resource URL: https://localhost:4567/api/v1/users?name
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* name (*required*): The name of the user to create.
+    * name (*required*): The name of the user to create.
     * email (*required*): The e-mail address of the user to create.
 
 ##### Example Request
@@ -167,16 +210,16 @@ The home timeline, or the list of the 50 most recent tweets shown on the homepag
 ```
 
 
-### PUT /users?:id
+#### PUT /users?:id
 
 * Description: Updates user information and returns it. Changing password using this is not allowed.
 * Resource URL: https://localhost:4567/api/v1/users?id
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* id (*required*): The id of the user to update.
-	* name (*optional*): The new name of the user.
+    * id (*required*): The id of the user to update.
+    * name (*optional*): The new name of the user.
   * email (*optional*): The new email address of the user.
 
 ##### Example Request
@@ -192,16 +235,16 @@ The home timeline, or the list of the 50 most recent tweets shown on the homepag
 
 
 
-### GET /users/:user_id/tweets
+#### GET /users/:user_id/tweets
 
 * Description: Retrieve *n* latest tweets from a specifin user.
 * Resource URL: https://localhost:4567/api/v1/users/:user_id/tweets
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* user_id (*required*): The user id of the specific user whose tweets will be returned
-	* num (*optional*): The number of recent tweets for this user to return. Defaults to 10. Max of 50.
+    * user_id (*required*): The user id of the specific user whose tweets will be returned
+    * num (*optional*): The number of recent tweets for this user to return. Defaults to 10. Max of 50.
 
 ##### Example Request
 
@@ -224,15 +267,15 @@ The home timeline, or the list of the 50 most recent tweets shown on the homepag
 ]
 ```
 
-### GET /users/:user_id/followers
+#### GET /users/:user_id/followers
 
 * Description: Return all followers of a user.
 * Resource URL: https://localhost:4567/api/v1/users/:user_id/followers
 * Resource Information
-	* Response formats: JSON
-	* Requires authentication?: No
+    * Response formats: JSON
+    * Requires authentication?: No
 * Parameters
-	* user_id (*required*): The user id of the specific user whose followers will be returned
+    * user_id (*required*): The user id of the specific user whose followers will be returned
 
 ##### Example Request
 
