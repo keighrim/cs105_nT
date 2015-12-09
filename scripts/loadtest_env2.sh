@@ -1,3 +1,4 @@
 #! /bin/bash    
 
-bash ./loadtest_env.sh 500 500 100
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+bash "$dir/loadtest_env.sh" 500 500 100
