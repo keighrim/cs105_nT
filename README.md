@@ -2,14 +2,26 @@
 
 nanoTwitter is a toy-mimic of popular social service [twitter](www.twitter.com), developed by [4 students](http://keighrim.github.io/cs105_nT/#/team) at Brandeis as a course project from *Software Engineering for scalability*.
 
+# Contents
+1. [License](#license)
+1. [Website](#website)
+1. [Details](#applicatoin-details)
+    - [Routings](#routings)
+    - [Caching](#caching)
+    - [Load Test](#load-test)
+    - [REST API](#rest-api)
+
 ## License
 This is a free software under [MIT license](LICENSE)
 
 ## Website
 Project website is accessible here: [http://keighrim.github.io/cs105_nT/](http://keighrim.github.io/cs105_nT/)
 
+
+
 ## Application details
-### Routing
+----
+### Routings
 
 * **`/`**: 
     * Homepage with 50 latest tweets from all users.
@@ -25,7 +37,8 @@ Project website is accessible here: [http://keighrim.github.io/cs105_nT/](http:/
     * By default, it will show the timeline of the target. (50 latest tweets from the target and those he/she follows)
     * It has links to tweeting history and relations of the target.
     * HIstory and relations pages can also be acceessed using `m` parameter in URL, `h` for history page, `n` for network page.
-    
+
+----    
 ### Caching
 
 Caching was handled using a redis instance hosted on the redis cloud service. This is linked through our Heroku instance.
@@ -45,6 +58,33 @@ If one user follows or unfollows another user, the timeline is invalid, and must
 ##### Home timeline(50 most recent tweets):
 The home timeline, or the list of the 50 most recent tweets shown on the homepage of a non-logged in user, is stored in redis with the same two-tier strategy as individual timeline. 
 
+----
+### Load test
+
+#### Test scenarios 
+To set up load test scenarios, we provide a series of `/test` routes.
+
+* `/test/reset/all` - Delete everything and recreate testuser
+* `/test/status` - See the current state of server
+* `/test/seed/_u_` - create “u” new users
+* `/test/tweets/_t_` - have testuser tweet “t” times
+* `/test/follow/_f_` - have f users follow testuser
+
+Also, for batch setup we have shell scripts in `scripts` directory in the project. 
+
+```bash
+$ scripts/loadtest_evn.sh
+usage: loadtest_env.sh <#users> <#tweets> <#followers> (optional) <base-url>
+e.g.: loadtest_env.sh 100 500 30 http://localhost:4567
+```
+
+For three presets from the project specification, we also have three wrapping scripts, `loadtest_evn1.sh`(100 500 30), `loadtest_evn3.sh`(500 500 100), `loadtest_evn3.sh`(3000 2000 1000)
+
+#### Test results
+
+
+
+----
 ### REST API
  as of 11/22/2015
 
