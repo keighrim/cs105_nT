@@ -23,3 +23,5 @@ gem 'typhoeus'
 gem 'json'
 
 gem 'logger'
+
+gem 'sinatra-partial'

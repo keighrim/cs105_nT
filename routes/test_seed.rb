@@ -1,8 +1,8 @@
 require 'faker'
 
 module NanoTwitter
-  module Test
-    module Seed
+  module Routes
+    module SeedTest
 
       def self.registered(app)
 
@@ -16,7 +16,7 @@ module NanoTwitter
               saved = u.save
             end
           end
-          "Created #{num} Users"
+          success "Created #{num} Users"
         end
       end
     end

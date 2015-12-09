@@ -59,6 +59,8 @@ GEM
     sinatra-activerecord (2.0.8)
       activerecord (>= 3.2)
       sinatra (~> 1.0)
+    sinatra-partial (0.4.0)
+      sinatra
     sqlite3 (1.3.10)
     thread_safe (0.3.5)
     tilt (2.0.1)
@@ -88,6 +90,7 @@ DEPENDENCIES
   redis (~> 3.2)
   sinatra
   sinatra-activerecord
+  sinatra-partial
   sqlite3
   tux
   typhoeus

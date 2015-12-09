@@ -1,7 +1,7 @@
 
 module NanoTwitter
-  module Test
-    module Reset
+  module Routes
+    module ResetTestEnv
 
       def self.registered(app)
 
@@ -19,7 +19,7 @@ module NanoTwitter
             $redis.del("timeline:recent:50")
           end
 
-          "Test Reset for \"testuser\" Successful"
+          success "Test Reset for \"testuser\" Successful"
         end
 
         app.get '/test/reset/all' do
@@ -30,7 +30,7 @@ module NanoTwitter
           User.delete_all
           $redis.flushall
           User.new(name: 'testuser', email: 'test@u.ser', password: 'test').save
-          "Total Reset Complete <br> User \"testuser\" Created"
+          success "Total Reset Complete \n User \"testuser\" Created"
         end
 
       end

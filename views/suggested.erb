@@ -1,0 +1,1 @@
+<div class="col-md-3 col-md-offset-1"><div class="row"><b>Suggested Users:</b><ul><% @users.each do |u| %><li><%="<a href=\"/profile/#{u.name}\"> #{u.name} </a>"%></br><form action="/follows" method="POST"><input type="hidden" name="user_id" value="<%= u.id %>" /><input class="btn btn-primary" type="submit" value="Follow" /></form></li><% end %></ul></div></div>
