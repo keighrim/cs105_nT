@@ -25,7 +25,7 @@ configure do
   set :app_name, 'Nano Twitter'
   set :authors, ['Allan Chesarone', 'Keigh Rim', 'Shu Chen', 'Vladimir Susaya']
   set :partial_template_engine, :erb
-  set :public, 'public' # this will provide a directory for static resources
+  set :public_dir, 'public' # this will provide a directory for static resources
 end
 
 if env == 'test'
