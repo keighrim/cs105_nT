@@ -1,0 +1,172 @@
+<h2>Load test</h2>
+
+<h3>Test scenarios</h3>
+
+<p>To set up load test scenarios, we provide a series of <code>/test</code> routes.</p>
+
+<ul>
+<li><code>/test/reset/all</code> - Delete everything and recreate testuser</li>
+<li><code>/test/status</code> - See the current state of server</li>
+<li><code>/test/seed/_u_</code> - create “u” new users</li>
+<li><code>/test/tweets/_t_</code> - have testuser tweet “t” times</li>
+<li><code>/test/follow/_f_</code> - have f users follow testuser</li>
+</ul>
+
+Also, for batch setup we have shell scripts in <code>scripts</code> directory in the project.</p>
+<p><code>
+$ scripts/loadtest_evn.sh
+</code></br>
+usage: <code>loadtest_env.sh &lt;#users&gt; &lt;#tweets&gt; &lt;#followers&gt; (optional) &lt;base-url&gt;
+</code></br>
+e.g.: <code>loadtest_env.sh 100 500 30 http://localhost:4567
+</code></p>
+
+<p>For three presets from the project specification, we also have three wrapping scripts, <code>loadtest_evn1.sh</code>(100 500 30), <code>loadtest_evn3.sh</code>(500 500 100), <code>loadtest_evn3.sh</code>(3000 2000 1000)</p>
+
+<h3>Test results</h3>
+
+<h4>Test case 1: u = 100, t = 500, f = 30</h4>
+
+<ul>
+* Click on tests to see details.
+<li><p ng-click="expand(tests[0])">/  - user tries to simply load up the home page (non-logged in)</p>
+<div ng-show="tests[0].show">
+Run 1:</br>
+0 - 250 clients over 1 min</br>
+611 ms avg resp</br>
+0.0 % err rate</br>
+0 Timeouts</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/widget/results/39ef4c1cb708638ad58bae91c785c55c'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/results/39ef4c1cb708638ad58bae91c785c55c" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+
+<p>Run 2:</br>
+0 - 500 clients over 1min</br>
+1135 ms avg resp</br>
+0.0 % err rate</br>
+0 Timouts</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/widget/results/0aab18775d22c154edb90f917b2210aa'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/results/0aab18775d22c154edb90f917b2210aa" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+
+<p>Run 3:
+0 - 1000 clients over 1min</br>
+1948 ms avg resp</br>
+0.0 % err rate</br>
+0 Timeouts</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/widget/results/15eb3c5f6979274eb6208ba3d9f13946'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/results/15eb3c5f6979274eb6208ba3d9f13946" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+
+<p>Run 4:
+0 - 2000 clients over 1min</br>
+3633 ms avg resp</br>
+0.0 % err rate</br>
+0 Timeouts</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/widget/results/e685acbf6df93ec8427bbbfebc7ef97f'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/results/e685acbf6df93ec8427bbbfebc7ef97f" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+
+<p>Run 5:
+0 - 4000 clients over 1min</br>
+Crashed at 00:50 with 3349 clients</br>
+1898 ms avg resp</br>
+70.8 % err rate</br>
+1215 Timeouts</br>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/widget/results/9879ac299c6babf1ea19c3c56aa27f37'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/f46bc93a4d4825bba2a8baa493dc751d/results/9879ac299c6babf1ea19c3c56aa27f37" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+</p>
+</div>
+</li>
+
+<li><p ng-click="expand(tests[1])">/user/testuser - specifically load “testusers” home page</p>
+<div ng-show="tests[1].show">
+Run 1:</br>
+0 - 500 clients over 1 min</br>
+6908 ms avg resp</br>
+0.0 % err rate</br>
+0 Timeouts</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/877bc705b477188f43f1a7756ea84568/widget/results/01dfaf1179f4c0d4cbc77192c5e2604c'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/877bc705b477188f43f1a7756ea84568/results/01dfaf1179f4c0d4cbc77192c5e2604c" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+
+<p>Run 2:</br>
+0 - 2000 clients over 1 min</br>
+6970 ms avg resp</br>
+0.0 % err rate</br>
+0 Timeout</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/877bc705b477188f43f1a7756ea84568/widget/results/6dc492190fc8ab4a041aee533f2d0869'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/877bc705b477188f43f1a7756ea84568/results/6dc492190fc8ab4a041aee533f2d0869" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+
+<p>Run 3:</br>
+0 - 4000 clients over 1 min</br>
+Crashed at 00:54 with 3604 clients</br>
+4425 ms avg resp</br>
+79.0 % err rate</br>
+3485 Timeout</br>
+</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/877bc705b477188f43f1a7756ea84568/widget/results/75d6858bdf737d1940d24b1a70ec7847'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/877bc705b477188f43f1a7756ea84568/results/75d6858bdf737d1940d24b1a70ec7847" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+
+</div>
+
+</li>
+
+<li><p ng-click="expand(tests[2])">/user/testuser/tweet (POST) - have testuser create one tweet</p>
+<div ng-show="tests[2].show">
+Run 1:</br>
+2000 clients over 1 min</br>
+236 ms avg resp</br>
+0.0 % err rate</br>
+0 Timeout</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/bc04dc2aaae9f312b656e365c4ff02c6/widget/results/c61604283dcd7cf3d7f9ef6da776a860'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/bc04dc2aaae9f312b656e365c4ff02c6/results/c61604283dcd7cf3d7f9ef6da776a860" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+
+<p>Run 2:</br>
+4000 clients over 1 min</br>
+1316 ms avg resp</br>
+0.0 % err rate</br>
+0 Timeout</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/bc04dc2aaae9f312b656e365c4ff02c6/widget/results/9b8ecc129703cd904200aba5d3310eb1'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/bc04dc2aaae9f312b656e365c4ff02c6/results/9b8ecc129703cd904200aba5d3310eb1" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+
+<p>Run 3:</br>
+8000 clients over 1 min</br>
+Crashed at 00:38</br>
+11311 ms avg resp</br>
+54.4 % err rate</br>
+1972 Timeout</br>
+</p>
+<div style="width: 500px;">
+<iframe width='500' height='300' frameborder='0' src='https://share.loader.io/reports/bc04dc2aaae9f312b656e365c4ff02c6/widget/results/50fa8192ef4d551f191f08cafc091d94'></iframe>
+<div style="width: 100%; text-align: right;">
+<a href="http://loader.io/reports/bc04dc2aaae9f312b656e365c4ff02c6/results/50fa8192ef4d551f191f08cafc091d94" target="_blank" style="padding: 0 10px 10px 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px;">View on loader.io</a>
+</div></div>
+</div>
+</li>
+</ul>

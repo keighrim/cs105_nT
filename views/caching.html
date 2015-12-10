@@ -1,0 +1,22 @@
+<h2>Caching</h2>
+
+<p>Caching was handled using a redis instance hosted on the redis cloud service. This is linked through our Heroku instance.</p>
+
+<h3>Caching strategy</h3>
+
+<h4>A user's timeline:</h4>
+
+<p>The query to generate a users timeline (the list of tweets of all of the users that this user follows, ordered by tweet time) is the most expensive operation, so we'd focused on tackle this problem to improve scalability.
+The first time that a user requests their timeline, very expensive SQL operation happens, Then this will be cached in the redis instance as a list of JSON objects representing each tweet object. 
+Future requests for the timeline will then get the list of tweets, stored as JSON, from redis. 
+Then we advanced to use two-tier caching, adding an outer layer to cache HTML strings, to make timeline generation even faster by reducing cost of translating JSON's and rendering HTML strings.
+Outer level, HTML cache, expires very soon (in a few seconds) because we thought having users looking at outdated cached web pages for a long period is a bad idea. 
+However, the deeper layer, JSON cache, stays a bit longer. And only when the instance in inner layer expires, the app performs SQL call again to get the most recent updates upon a user's request.
+In this way we can lazily generate timelines on user requests, not eagerly on every event of creating/deleting tweets.
+If one user follows or unfollows another user, the timeline is invalid, and must be rebuild. We invalidate redis caching by deleting the instance.</p>
+
+<h4>Home timeline(50 most recent tweets):</h4>
+
+<p>The home timeline, or the list of the 50 most recent tweets shown on the homepage of a non-logged in user, is stored in redis with the same two-tier strategy as individual timeline. </p>
+
+<a href="#/about">&#8592 Back</a>

@@ -1,8 +1,9 @@
 angular.module('githubpage',['ngRoute'])
-.controller('MainCtrl',['$scope','restapi',
-	function($scope,restapi){
+.controller('MainCtrl',['$scope','restapi','tests',
+	function($scope,restapi,tests){
 
 		$scope.restapi = restapi;
+		$scope.tests = tests;
 
 		$scope.expand = function(list_items){
 			if (list_items.show==true) {
@@ -19,6 +20,18 @@ angular.module('githubpage',['ngRoute'])
 		.when('/about', {
 			templateUrl: 'views/about.html',
    			controller: 'MainCtrl'
+		})
+		.when('/caching', {
+			templateUrl: 'views/caching.html',
+			controller: 'MainCtrl'
+		})
+		.when('/loadtests', {
+			templateUrl: 'views/load.html',
+			controller: 'MainCtrl'
+		})
+		.when('/api', {
+			templateUrl: 'views/api.html',
+			controller: 'MainCtrl'
 		})
 		.when('/routes', {
 			templateUrl: 'views/routes.html',
@@ -44,4 +57,5 @@ angular.module('githubpage',['ngRoute'])
 		{content:"PUT /users?:id"},
 		{content:"GET /users/:user_id/tweets"},
 		{content:"GET /users/:user_id/followers"}])
+.constant('tests',[{item:"t1"},{item:"t2"},{item:"t3"}])
 
